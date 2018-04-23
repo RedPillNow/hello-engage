@@ -4,7 +4,7 @@ import * as rpTypes from './commons/types';
 import {ResponseGenerator} from './commons/response-generator';
 
 const APP_ID = 'amzn1.ask.skill.6ae3d277-34f5-43c1-a52c-08b318becb16';
-console.log('hello-engage Alexa Skill loading...');
+
 const LaunchRequestHandler: rpTypes.IntentHandler = {
 	canHandle(handlerInput: Alexa.HandlerInput): boolean {
 		return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
