@@ -1,0 +1,296 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "hello engage",
+            "intents": [
+                {
+                    "name": "GeneralGreetingIntent",
+                    "slots": [],
+                    "samples": [
+                        "hello",
+                        "hello domino",
+                        "hello red pill",
+                        "hello lotus domino",
+                        "hello engage",
+                        "greetings",
+                        "howdy",
+                        "howdy Red Pill",
+                        "hey",
+                        "what's up",
+                        "what's happening"
+                    ]
+                },
+                {
+                    "name": "SessionsIntent",
+                    "slots": [
+                        {
+                            "name": "AMAZON.TIME",
+                            "type": "AMAZON.TIME"
+                        },
+                        {
+                            "name": "AMAZON.Person",
+                            "type": "AMAZON.Person"
+                        },
+                        {
+                            "name": "AMAZON.Room",
+                            "type": "AMAZON.Room"
+                        },
+                        {
+                            "name": "SessionName",
+                            "type": "SessionName"
+                        }
+                    ],
+                    "samples": [
+                        "which sessions are up next",
+                        "what sessions are up next",
+                        "get sessions happening at {AMAZON.TIME}",
+                        "which sessions are happening at {AMAZON.TIME}",
+                        "get sessions happening at {AMAZON.TIME} by {AMAZON.Person}",
+                        "show sessions happening at {AMAZON.TIME} by {AMAZON.Person}",
+                        "get sessions beginning at {AMAZON.TIME}",
+                        "show sessions beginning at {AMAZON.TIME}",
+                        "get sessions beginning at {AMAZON.TIME} by {AMAZON.Person}",
+                        "show sessions beginning at {AMAZON.TIME} by {AMAZON.Person}",
+                        "get sessions at {AMAZON.TIME}",
+                        "show sessions at {AMAZON.TIME}",
+                        "get sessions by {AMAZON.Person}",
+                        "show sessions by {AMAZON.Person}",
+                        "get session in the {AMAZON.Room} room at {AMAZON.TIME}",
+                        "which session is in {AMAZON.Room} room at {AMAZON.TIME}",
+                        "get sessions in {AMAZON.Room}",
+                        "show sessions in {AMAZON.Room}",
+                        "get the room name for {SessionName}",
+                        "find the room name for {SessionName}",
+                        "show the room name for {SessionName}",
+                        "which room is {SessionName} in",
+                        "which room is {AMAZON.Person} speaking in next",
+                        "get the {AMAZON.TIME} sessions",
+                        "what time is the {SessionName} session",
+                        "when does {SessionName} start",
+                        "who is speaking at {SessionName}",
+                        "who is speaking next in the {AMAZON.Room} room",
+                        "what is {SessionName} about",
+                        "when is {AMAZON.Person} speaking",
+                        "when is the {SessionName} session"
+                    ]
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": [
+                        "some assistance please",
+                        "I need help",
+                        "How do I use this",
+                        "I need some help"
+                    ]
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NextIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.PreviousIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.MoreIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NavigateSettingsIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.PageUpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.PageDownIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.ScrollRightIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.ScrollDownIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.ScrollLeftIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.ScrollUpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.RepeatIntent",
+                    "samples": [
+                        "repeat",
+                        "say that again",
+                        "what did you say",
+                        "repeat that",
+                        "say again"
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "name": "AMAZON.Room",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "Honolulu"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Vancouver"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Sky Room"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Theatre"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Sun Room"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Trinidad"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Guadaloupe"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "SessionName",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "UX Expert in 5 steps",
+                                "synonyms": [
+                                    "Str24"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Watson Workspace",
+                                "synonyms": [
+                                    "Rnd07"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Connections REST API",
+                                "synonyms": [
+                                    "Dev05"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Use your Collaboration Tools",
+                                "synonyms": [
+                                    "Str08"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Social Media Analytics",
+                                "synonyms": [
+                                    "Ana04"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Domino and the Cloud",
+                                "synonyms": [
+                                    "Adm10"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "IBM Champions",
+                                "synonyms": [
+                                    "Sp4"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Warp-Speed Sponsoring",
+                                "synonyms": [
+                                    "Sp2"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Methods for deploying applications in an integrated digital workspace",
+                                "synonyms": [
+                                    "w3"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Modernization Workshop",
+                                "synonyms": [
+                                    "w2"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "IBM Domino Application Transformation Jumpstart",
+                                "synonyms": [
+                                    "w1"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Keynote",
+                                "synonyms": [
+                                    "Keynote and Opening General Session",
+                                    "Sp1",
+                                    "Opening General Session"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
