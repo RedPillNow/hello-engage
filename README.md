@@ -15,12 +15,12 @@ The following is required to develop for this skill.
 
 The following tasks are available. More information can be found in `package.json`.
 
-* bump:major - Bump the `package.json` major version number
-* bump:minor - Bump the `package.json` minor version number
-* bump:patch - Bump the `package.json` patch version number
-* clean-js - Remove all .js and .map files within the dist directory
-* compile - Compile all TypeScript to JavaScript and place in the dist directory
-* deploy - run the `compile` task, create a `hello-engage-alexa-skill.zip` file and include `node_modules` and `package.json`
+* `bump:major` - Bump the `package.json` major version number
+* `bump:minor` - Bump the `package.json` minor version number
+* `bump:patch` - Bump the `package.json` patch version number
+* `clean-js` - Remove all .js and .map files within the dist directory
+* `compile` - Compile all TypeScript to JavaScript and place in the dist directory
+* `deploy` - run the `compile` task, create a `hello-engage-alexa-skill.zip` file and include `node_modules` and `package.json`
 
 ## Relevant Amazon links
 
