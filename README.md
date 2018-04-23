@@ -21,3 +21,12 @@ The following tasks are available. More information can be found in `package.jso
 * clean-js - Remove all .js and .map files within the dist directory
 * compile - Compile all TypeScript to JavaScript and place in the dist directory
 * deploy - run the `compile` task, create a `hello-engage-alexa-skill.zip` file and include `node_modules` and `package.json`
+
+## Relevant Amazon links
+
+This skill uses AWS Lambda along with the Alexa Developer Console.
+
+* [`hello-engage` AWS Lambda Function]('https://us-west-2.console.aws.amazon.com/lambda/home?region=us-west-2#/functions/hello-engage-alexa-skill?tab=graph')
+* [`hello-engage` Alexa Developer Console]('https://developer.amazon.com/alexa/console/ask/build/custom/amzn1.ask.skill.70a2dcc9-453d-4786-979d-3231c79d76dc/development/en_US/dashboard')
+* AWS Lambda ARN: `arn:aws:lambda:us-west-2:215532694292:function:hello-engage-alexa-skill`
+* Alexa App ID: `amzn1.ask.skill.70a2dcc9-453d-4786-979d-3231c79d76dc`
