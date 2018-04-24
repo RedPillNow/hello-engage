@@ -1,7 +1,8 @@
 import * as Alexa from 'ask-sdk-core';
-import { Response } from 'ask-sdk-model';
+import { Response, IntentRequest, Slot } from 'ask-sdk-model';
 import * as rpTypes from './commons/types';
 import {ResponseGenerator} from './commons/response-generator';
+import * as utils from './commons/utils';
 
 const APP_ID = 'amzn1.ask.skill.6ae3d277-34f5-43c1-a52c-08b318becb16';
 
@@ -35,21 +36,52 @@ const GeneralGreetingIntentHandler: rpTypes.IntentHandler = {
 			.getResponse();
 	}
 };
+/**
+ * A request interceptor to get the sessions for us to work with.
+ * Will populate a session attribute called `sessions`
+ */
+const SessionsRequestInterceptor = {
+	process(handlerInput: Alexa.HandlerInput) {
+		return ResponseGenerator.getSessions(handlerInput)
+			.then((sessions) => {
+				handlerInput.attributesManager.setSessionAttributes({'sessions': sessions});
+			});
+	}
+}
 
 const SessionsIntentHandler: rpTypes.IntentHandler = {
 	canHandle(handlerInput: Alexa.HandlerInput): boolean {
 		return handlerInput.requestEnvelope.request.type === 'IntentRequest' && handlerInput.requestEnvelope.request.intent.name === 'SessionsIntent';
 	},
 	handle(handlerInput: Alexa.HandlerInput): Response {
-		const resp = ResponseGenerator.getSessionsResponse(handlerInput);
-		const speechText = resp.textContent.primaryText.text;
+		// console.log('SessionsIntentHandler, handlerInput=', handlerInput);
+		let sessions = handlerInput.attributesManager.getSessionAttributes().sessions;
+		console.log('SessionsIntentHandler, sessionAttrs=', sessions);
+		console.log('SessionsIntentHandler, sessions.length', sessions.length);
+		if (sessions) {
+			let vals = utils.getSlotValues((<IntentRequest> handlerInput.requestEnvelope.request).intent.slots);
+			console.log('SessionsIntentHandler, vals=', vals);
+			let resp = ResponseGenerator.getSessionsResp(sessions, vals);
+			console.log('SessionsIntentHandler, resp=', resp);
+			return handlerInput.responseBuilder
+				.speak('')
+				.withShouldEndSession(false)
+				.getResponse();
+		}else {
+			return handlerInput.responseBuilder
+				.speak('I don\'t have any sessions, please try again')
+				.withShouldEndSession(false)
+				.getResponse();
+		}
+
+		/* const speechText = resp.textContent.primaryText.text;
 
 		return handlerInput.responseBuilder
 			.speak(speechText)
 			.reprompt(speechText)
 			.withSimpleCard(resp.cardTitle, speechText)
 			.withShouldEndSession(false)
-			.getResponse()
+			.getResponse() */
 	}
 };
 
@@ -155,6 +187,9 @@ export const handler = skillBuilder
 		RepeatIntentHandler,
 		SessionEndedRequestHandler,
 		SessionsIntentHandler
+	)
+	.addRequestInterceptors(
+		SessionsRequestInterceptor
 	)
 	.addErrorHandlers(ErrorHandler)
 	.lambda();

@@ -54,6 +54,7 @@ export type Session = {
 	datetime: string,
 	room: string,
 	abstract: string,
+	spoken: Session
 }
 
 export type Speaker = {

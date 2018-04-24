@@ -1,5 +1,4 @@
 import * as Alexa from 'ask-sdk-core';
-import { IntentRequest, Slot } from 'ask-sdk-model';
 import * as rpTypes from './types';
 import * as utils from './utils';
 import {DataHelper} from '../data/dataHelper'
@@ -50,29 +49,77 @@ export class ResponseGenerator {
 		};
 	}
 
-	static getSessionsResponse(handlerInput: Alexa.HandlerInput) {
-		let vals = utils.getSlotValues((<IntentRequest> handlerInput.requestEnvelope.request).intent.slots);
-
-		DataHelper.getSessionsData()
-		.then((response: rpTypes.ViewData) => {
-			let entries = response.viewentry;
-			let sessions: rpTypes.Session[] = entries.map((ent: rpTypes.ViewEntry, idx, arr) => {
-				return {
-					title: DataHelper.getEntryValue(ent, 'session_title'),
-					datetime: DataHelper.getEntryValue(ent, 'session_date'),
-					room: DataHelper.getEntryValue(ent, 'session_room'),
-					abstract: DataHelper.getEntryValue(ent, '$37'),
-					speakers: null
-				} as rpTypes.Session;
-			});
-			console.log('ResponseGenerator.getSessionsResponse, sessions=', sessions);
+	static getSessions(handlerInput): Promise<any[]> {
+		return new Promise((resolve, reject) => {
+			DataHelper.getSessionsData()
+				.then((response: rpTypes.ViewData) => {
+					let entries = response.viewentry;
+					let sessions: rpTypes.Session[] = entries.map((ent: rpTypes.ViewEntry, idx, arr) => {
+						return {
+							title: DataHelper.getEntryValue(ent, 'session_title'),
+							datetime: DataHelper.getEntryValue(ent, 'session_date'),
+							room: DataHelper.getEntryValue(ent, 'session_room'),
+							abstract: DataHelper.getEntryValue(ent, '$37'),
+							speakers: null
+						} as rpTypes.Session;
+					});
+					resolve(entries);
+				})
+				.catch((err) => {
+					reject(err);
+				});
 		});
-		return {
-			textContent: new Alexa.PlainTextContentHelper()
-				.withPrimaryText('Not yet implemented. We\'re working on it, settle your jets')
-				.getTextContent(),
-			cardTitle: 'Not yet implemented'
-		};
+	}
+
+	static getSessionsResp(sessions: any[], slots): rpTypes.Session[] {
+		if (slots) {
+			let time = slots['AMAZON.TIME'];
+			let speaker = slots['AMAZON.Person'];
+			let room = slots['AMAZON.Room'];
+			let title = slots['SessionName'];
+			let engSessions = sessions.filter((sess, idx, arr) => {
+				let sessSpeaker = DataHelper.getEntryValue(sess, 'speaker_name');
+				console.log('ResponseGenerator.getSessionsResp, sessSpeaker', sessSpeaker);
+				let sessRoom = DataHelper.getEntryValue(sess, 'session_room');
+				let sessTime = DataHelper.getEntryValue(sess, 'session_date');
+				let sessTitle = DataHelper.getEntryValue(sess, 'session_title');
+				let returnVal = false;
+				if (speaker && sessSpeaker && (speaker.toLowerCase() === sessSpeaker.toLowerCase() || sessSpeaker.indexOf(speaker.toLowerCase()) > -1)) {
+					returnVal = true;
+				}
+				if (time && sessTime && time === sessTime) {
+					returnVal = true;
+				}
+				if (room && sessRoom && (room.toLowerCase() === sessRoom.toLowerCase() || sessRoom.indexOf(room) > -1)) {
+					returnVal = true;
+				}
+				if (title && sessTitle && (title.toLowerCase() === sessTitle.toLowerCase() || sessTitle.indexOf(title) > -1)) {
+					returnVal = true;
+				}
+				return returnVal;
+			});
+			console.log('ResponseGenerator.getSessionsResp, engSessions=', engSessions);
+			if (engSessions && engSessions.length > 0) {
+				let rpSessions = engSessions.map((sess, idx, arr) => {
+					return {
+						title: DataHelper.getEntryValue(sess, 'session_title'),
+						speakers: [],
+						datetime: DataHelper.getEntryValue(sess, 'session_date'),
+						room: DataHelper.getEntryValue(sess, 'session_room'),
+						abstract: DataHelper.getEntryValue(sess, '$37'),
+						spoken: {
+							title: DataHelper.getEntryValue(sess, '', true),
+							speakers: [],
+							datetime: DataHelper.getEntryValue(sess, '', true),
+							room: DataHelper.getEntryValue(sess, '', true),
+							abstract: DataHelper.getEntryValue(sess, '$37', true)
+						}
+					} as rpTypes.Session;
+				});
+				return rpSessions;
+			}
+		}
+		return null;
 	}
 
 }
