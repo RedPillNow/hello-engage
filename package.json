@@ -33,6 +33,7 @@
     "ask-sdk": "^2.0.0",
     "ask-sdk-core": "^2.0.1",
     "ask-sdk-model": "^1.0.1",
+    "moment": "^2.22.1",
     "request": "^2.85.0",
     "request-promise": "^4.2.2"
   }

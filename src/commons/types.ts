@@ -26,3 +26,38 @@ export type TextResponse = {
 	cardTitle: string,
 	renderTemplate?: Template
 }
+
+export type ViewData = {
+	'@timestamp': string,
+	'@toplevelentries': string,
+	'viewentry': ViewEntry[]
+}
+
+export type ViewEntry = {
+	'@position': string,
+	'@unid': string,
+	'@noteid': string,
+	'@siblings': string,
+	'entrydata': ViewEntryColumn[]
+}
+
+export type ViewEntryColumn = {
+	'@columnnumber': string,
+	'@name': string,
+	'datetime'?: any,
+	'text'?: any
+}
+
+export type Session = {
+	title: string,
+	speakers: Speaker[],
+	datetime: string,
+	room: string,
+	abstract: string,
+}
+
+export type Speaker = {
+	name: string,
+	photo: string,
+	org: string
+}

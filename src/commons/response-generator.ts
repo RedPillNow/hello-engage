@@ -2,6 +2,7 @@ import * as Alexa from 'ask-sdk-core';
 import { IntentRequest, Slot } from 'ask-sdk-model';
 import * as rpTypes from './types';
 import * as utils from './utils';
+import {DataHelper} from '../data/dataHelper'
 
 export class ResponseGenerator {
 
@@ -51,7 +52,21 @@ export class ResponseGenerator {
 
 	static getSessionsResponse(handlerInput: Alexa.HandlerInput) {
 		let vals = utils.getSlotValues((<IntentRequest> handlerInput.requestEnvelope.request).intent.slots);
-		console.log('ResponseGenerator.getSessionsResponse, vals=', vals);
+
+		DataHelper.getSessionsData()
+		.then((response: rpTypes.ViewData) => {
+			let entries = response.viewentry;
+			let sessions: rpTypes.Session[] = entries.map((ent: rpTypes.ViewEntry, idx, arr) => {
+				return {
+					title: DataHelper.getEntryValue(ent, 'session_title'),
+					datetime: DataHelper.getEntryValue(ent, 'session_date'),
+					room: DataHelper.getEntryValue(ent, 'session_room'),
+					abstract: DataHelper.getEntryValue(ent, '$37'),
+					speakers: null
+				} as rpTypes.Session;
+			});
+			console.log('ResponseGenerator.getSessionsResponse, sessions=', sessions);
+		});
 		return {
 			textContent: new Alexa.PlainTextContentHelper()
 				.withPrimaryText('Not yet implemented. We\'re working on it, settle your jets')
