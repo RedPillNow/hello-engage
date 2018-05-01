@@ -108,4 +108,14 @@ export class ResponseGenerator {
 		};
 	}
 
+	static get noSessionsResponse(): rpTypes.TextResponse {
+		return {
+			textContent: new Alexa.PlainTextContentHelper()
+				.withPrimaryText('I don\'t have any sessions, please try again')
+				.getTextContent(),
+			cardTitle: 'I don\'t have any sessions, please try again',
+			cardText: 'I didn\'t find any sessions'
+		};
+	}
+
 }

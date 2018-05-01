@@ -49,16 +49,21 @@ const GeneralGreetingIntentHandler: rpTypes.IntentHandler = {
 			.getResponse();
 	}
 };
-
+/**
+ * This is actually an ALL request interceptor. However, we include a 'canHandle'
+ * determination that only actually does anything for the SessionsIntent.
+ * Will fetch the sessions based on the slot values available
+ */
 const SessionsRequestInterceptor = {
 	process(handlerInput: Alexa.HandlerInput): Promise<void> {
 		let canHandle = handlerInput.requestEnvelope.request.type === 'IntentRequest' && handlerInput.requestEnvelope.request.intent.name === 'SessionsIntent';
 		if (canHandle) {
-			console.log('SessionsRequestInterceptor');
+			// console.log('SessionsRequestInterceptor');
 			let sessAttrs = handlerInput.attributesManager.getSessionAttributes();
 			let vals = utils.getSlotValues((<IntentRequest> handlerInput.requestEnvelope.request).intent.slots);
 			return DataHelper.findSessions(vals)
 				.then((response) => {
+					console.log('SessionsRequestInterceptor.findSessions.then, response=', response);
 					if (utils.isResponseValid(response)) {
 						sessAttrs.foundSessions = response;
 						handlerInput.attributesManager.setSessionAttributes(sessAttrs);
@@ -76,11 +81,11 @@ const SessionsIntentHandler: rpTypes.IntentHandler = {
 		return handlerInput.requestEnvelope.request.type === 'IntentRequest' && handlerInput.requestEnvelope.request.intent.name === 'SessionsIntent';
 	},
 	handle(handlerInput: Alexa.HandlerInput): Response {
-		console.log('SessionsIntentHandler, handlerInput=', handlerInput);
+		// console.log('SessionsIntentHandler, handlerInput=', handlerInput);
 		let sessAttrs = handlerInput.attributesManager.getSessionAttributes();
 
 		let foundSessions = sessAttrs.foundSessions;
-		console.log('SessionsIntentHandler, foundSessions=', JSON.stringify(foundSessions));
+		// console.log('SessionsIntentHandler, foundSessions=', JSON.stringify(foundSessions));
 		if (foundSessions) {
 			let currSessResp: rpTypes.TextResponse = ResponseGenerator.getSessionsResp(foundSessions, -1);
 			let speechTxt = currSessResp.textContent.primaryText.text;
@@ -94,10 +99,12 @@ const SessionsIntentHandler: rpTypes.IntentHandler = {
 				.getResponse();
 		}else {
 			// todo: we probably should just throw an error
-			let speechTxt = 'I don\'t have any sessions, please try again';
+			let currSessResp = ResponseGenerator.noSessionsResponse;
+			let speechTxt = currSessResp.textContent.primaryText.text;
 
 			return handlerInput.responseBuilder
 				.speak(speechTxt)
+				.withSimpleCard(currSessResp.cardTitle, currSessResp.cardText)
 				.withShouldEndSession(false)
 				.getResponse();
 		}
@@ -142,25 +149,6 @@ const HelpIntentHandler: rpTypes.IntentHandler = {
 			.speak(speechText)
 			.withSimpleCard(resp.cardTitle, speechText)
 			.getResponse();
-	}
-}
-// TODO:
-const MoreNextAndPageDownIntentHandler: rpTypes.IntentHandler = {
-	canHandle(handlerInput: Alexa.HandlerInput): boolean {
-		return handlerInput.requestEnvelope.request.type === 'IntentRequest' && (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.NextIntent' || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.MoreIntent' || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.PageDownIntent' || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.ScrollDownIntent');
-	},
-	handle(handlerInput: Alexa.HandlerInput): Response {
-		console.log('hello-engage.MoreNextAndPageDownIntentHandler.handle', arguments);
-		return null;
-	}
-}
-// TODO:
-const PreviousAndPageUpIntentHandler: rpTypes.IntentHandler = {
-	canHandle(handlerInput: Alexa.HandlerInput): boolean {
-		return handlerInput.requestEnvelope.request.type === 'IntentRequest' && (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.PreviousIntent' ||  handlerInput.requestEnvelope.request.intent.name === 'AMAZON.PageUpIntent' || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.ScrollUpIntent');
-	},
-	handle(handlerInput: Alexa.HandlerInput): Response {
-		return null;
 	}
 }
 /**
@@ -272,8 +260,6 @@ export const handler = skillBuilder
 		GeneralGreetingIntentHandler,
 		HelpIntentHandler,
 		LaunchRequestHandler,
-		MoreNextAndPageDownIntentHandler,
-		PreviousAndPageUpIntentHandler,
 		RepeatIntentHandler,
 		SessionEndedRequestHandler,
 		SessionsIntentHandler,

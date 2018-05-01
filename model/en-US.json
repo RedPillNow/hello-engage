@@ -1,7 +1,7 @@
 {
     "interactionModel": {
         "languageModel": {
-            "invocationName": "hello engage",
+            "invocationName": "hello conference",
             "intents": [
                 {
                     "name": "GeneralGreetingIntent",
@@ -43,25 +43,28 @@
                     "samples": [
                         "which sessions are up next",
                         "what sessions are up next",
+                        "what are the upcoming sessions",
+                        "which sessions are upcoming",
+                        "get upcoming sessions",
                         "get sessions happening at {AMAZON.TIME}",
+                        "show sessions happening at {AMAZON.TIME}",
                         "which sessions are happening at {AMAZON.TIME}",
-                        "get sessions happening at {AMAZON.TIME} by {AMAZON.Person}",
-                        "show sessions happening at {AMAZON.TIME} by {AMAZON.Person}",
                         "get sessions beginning at {AMAZON.TIME}",
                         "show sessions beginning at {AMAZON.TIME}",
-                        "get sessions beginning at {AMAZON.TIME} by {AMAZON.Person}",
-                        "show sessions beginning at {AMAZON.TIME} by {AMAZON.Person}",
                         "get sessions at {AMAZON.TIME}",
                         "show sessions at {AMAZON.TIME}",
                         "get sessions by {AMAZON.Person}",
                         "show sessions by {AMAZON.Person}",
                         "get session in the {AMAZON.Room} room at {AMAZON.TIME}",
-                        "which session is in {AMAZON.Room} room at {AMAZON.TIME}",
+                        "get upcoming sessions in the {AMAZON.Room}",
+                        "which sessions are next in {AMAZON.Room}",
+                        "which session is in {AMAZON.Room}",
                         "get sessions in {AMAZON.Room}",
                         "show sessions in {AMAZON.Room}",
                         "get the room name for {SessionName}",
                         "find the room name for {SessionName}",
                         "show the room name for {SessionName}",
+                        "which room is {SessionName}",
                         "which room is {SessionName} in",
                         "which room is {AMAZON.Person} speaking in next",
                         "get the {AMAZON.TIME} sessions",
@@ -311,6 +314,16 @@
                                     "Sp1",
                                     "Opening General Session"
                                 ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "AMAZON.Person",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "Peter Presnell"
                             }
                         }
                     ]

@@ -111,6 +111,9 @@ export class Session {
 
 	get spokenRoom() {
 		let spokenRoom = this.sessionRoom;
+		if (!spokenRoom.includes('room') && spokenRoom.includes('Room')) {
+			spokenRoom += ' Room';
+		}
 		spokenRoom = spokenRoom.replace('A. ', '');
 		spokenRoom = spokenRoom.replace('B. ', '');
 		spokenRoom = spokenRoom.replace('C. ', '');
