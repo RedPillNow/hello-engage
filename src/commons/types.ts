@@ -24,7 +24,8 @@ export type TextResponse = {
 	textContent: TextContent,
 	reprompt?: string,
 	cardTitle: string,
-	renderTemplate?: Template
+	renderTemplate?: Template,
+	cardText?: string
 }
 
 export type ViewData = {
@@ -48,14 +49,14 @@ export type ViewEntryColumn = {
 	'text'?: any
 }
 
-export type Session = {
+/* export type Session = {
 	title: string,
 	speakers: Speaker[],
 	datetime: string,
 	room: string,
 	abstract: string,
 	spoken: Session
-}
+} */
 
 export type Speaker = {
 	name: string,

@@ -15,3 +15,16 @@ export function getSlotValues(slots) {
 	}
 	return returnVal;
 }
+
+export function isResponseValid(response) {
+	if (!response) {
+		return false;
+	} else if (response && Array.isArray(response)) {
+		return response.length > 0 && response[0].document ? true : false;
+	}
+	return true;
+}
+
+export function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}

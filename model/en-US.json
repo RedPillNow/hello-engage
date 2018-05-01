@@ -144,6 +144,31 @@
                         "repeat that",
                         "say again"
                     ]
+                },
+                {
+                    "name": "NoIntent",
+                    "slots": [],
+                    "samples": [
+                        "negative",
+                        "that's not it",
+                        "nope",
+                        "not this one",
+                        "not that one",
+                        "No"
+                    ]
+                },
+                {
+                    "name": "YesIntent",
+                    "slots": [],
+                    "samples": [
+                        "affirmative",
+                        "that's the one",
+                        "Yup that's it",
+                        "Yes that's it",
+                        "OK",
+                        "Yup",
+                        "Yes"
+                    ]
                 }
             ],
             "types": [

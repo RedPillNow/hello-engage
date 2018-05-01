@@ -1,7 +1,9 @@
 import * as Alexa from 'ask-sdk-core';
 import * as rpTypes from './types';
-import * as utils from './utils';
-import {DataHelper} from '../data/dataHelper'
+import {Session} from '../models/session';
+import {Speaker} from '../models/speaker';
+import {DataHelper} from '../data/dataHelper';
+
 
 export class ResponseGenerator {
 
@@ -49,77 +51,61 @@ export class ResponseGenerator {
 		};
 	}
 
-	static getSessions(handlerInput): Promise<any[]> {
-		return new Promise((resolve, reject) => {
-			DataHelper.getSessionsData()
-				.then((response: rpTypes.ViewData) => {
-					let entries = response.viewentry;
-					let sessions: rpTypes.Session[] = entries.map((ent: rpTypes.ViewEntry, idx, arr) => {
-						return {
-							title: DataHelper.getEntryValue(ent, 'session_title'),
-							datetime: DataHelper.getEntryValue(ent, 'session_date'),
-							room: DataHelper.getEntryValue(ent, 'session_room'),
-							abstract: DataHelper.getEntryValue(ent, '$37'),
-							speakers: null
-						} as rpTypes.Session;
-					});
-					resolve(entries);
-				})
-				.catch((err) => {
-					reject(err);
-				});
-		});
-	}
-
-	static getSessionsResp(sessions: any[], slots): rpTypes.Session[] {
-		if (slots) {
-			let time = slots['AMAZON.TIME'];
-			let speaker = slots['AMAZON.Person'];
-			let room = slots['AMAZON.Room'];
-			let title = slots['SessionName'];
-			let engSessions = sessions.filter((sess, idx, arr) => {
-				let sessSpeaker = DataHelper.getEntryValue(sess, 'speaker_name');
-				console.log('ResponseGenerator.getSessionsResp, sessSpeaker', sessSpeaker);
-				let sessRoom = DataHelper.getEntryValue(sess, 'session_room');
-				let sessTime = DataHelper.getEntryValue(sess, 'session_date');
-				let sessTitle = DataHelper.getEntryValue(sess, 'session_title');
-				let returnVal = false;
-				if (speaker && sessSpeaker && (speaker.toLowerCase() === sessSpeaker.toLowerCase() || sessSpeaker.indexOf(speaker.toLowerCase()) > -1)) {
-					returnVal = true;
-				}
-				if (time && sessTime && time === sessTime) {
-					returnVal = true;
-				}
-				if (room && sessRoom && (room.toLowerCase() === sessRoom.toLowerCase() || sessRoom.indexOf(room) > -1)) {
-					returnVal = true;
-				}
-				if (title && sessTitle && (title.toLowerCase() === sessTitle.toLowerCase() || sessTitle.indexOf(title) > -1)) {
-					returnVal = true;
-				}
-				return returnVal;
-			});
-			console.log('ResponseGenerator.getSessionsResp, engSessions=', engSessions);
-			if (engSessions && engSessions.length > 0) {
-				let rpSessions = engSessions.map((sess, idx, arr) => {
-					return {
-						title: DataHelper.getEntryValue(sess, 'session_title'),
-						speakers: [],
-						datetime: DataHelper.getEntryValue(sess, 'session_date'),
-						room: DataHelper.getEntryValue(sess, 'session_room'),
-						abstract: DataHelper.getEntryValue(sess, '$37'),
-						spoken: {
-							title: DataHelper.getEntryValue(sess, '', true),
-							speakers: [],
-							datetime: DataHelper.getEntryValue(sess, '', true),
-							room: DataHelper.getEntryValue(sess, '', true),
-							abstract: DataHelper.getEntryValue(sess, '$37', true)
-						}
-					} as rpTypes.Session;
-				});
-				return rpSessions;
+	static getSessionsResp(foundSessions: any[], lastIdx: number) {
+		console.log('ResponseGenerator.getSessionsResp, lastIdx=', lastIdx);
+		if (foundSessions && foundSessions.length > 0) {
+			let nextIdx = lastIdx + 1;
+			let sess: Session = null;
+			if (foundSessions[nextIdx] instanceof Session) {
+				console.log('ResponseGenerator.getSessionsResp, got a Session');
+				sess = foundSessions[nextIdx];
+			}else {
+				console.log('ResponseGenerator.getSessionsResp, create a Session');
+				let apiObj = foundSessions[nextIdx]._apiObj ? foundSessions[nextIdx]._apiObj : foundSessions[nextIdx];
+				sess = new Session(apiObj);
+			}
+			console.log('ResponseGenerator.getSessionsResp, sess=', JSON.stringify(sess));
+			let primaryText = sess.spokenTitle;
+			primaryText += ' by ' + sess.spokenSpeakers;
+			primaryText += ', in the ' + sess.spokenRoom;
+			primaryText += ', ' + sess.spokenDate + '.';
+			primaryText += ' Is this the one you\'re looking for?';
+			let cardText = sess.sessionTitle;
+			cardText += ' by ' + sess.spokenSpeakers;
+			cardText += ', in the ' + sess.sessionRoom;
+			cardText += ', ' + sess.cardDate + '.';
+			cardText += ' Is this the one you\'re looking for?';
+			let resp = {
+				textContent: new Alexa.PlainTextContentHelper()
+					.withPrimaryText(primaryText)
+					.getTextContent(),
+				cardTitle: sess.sessionTitle.replace('&', 'and'),
+				cardText: cardText
+			};
+			console.log('ResponseGenerator.getSessionsResp, resp=', resp);
+			return resp;
+		}else {
+			return {
+				textContent: new Alexa.PlainTextContentHelper()
+					.withPrimaryText('We didn\'t find any sessions that match your request. Please try again.')
+					.getTextContent(),
+				cardTitle: 'Don\'t shoot the messenger, but we couldn\'t find any sessions'
 			}
 		}
-		return null;
+	}
+
+	static getNoResponse(foundSessions, lastIdx): rpTypes.TextResponse {
+		console.log('ResponseGenerator.getNoResponse', arguments);
+		return ResponseGenerator.getSessionsResp(foundSessions, lastIdx);
+	}
+
+	static get yesResponse(): rpTypes.TextResponse {
+		return {
+			textContent: new Alexa.PlainTextContentHelper()
+				.withPrimaryText('Excellent! Enjoy the session')
+				.getTextContent(),
+			cardTitle: 'Excellent! Enjoy the session'
+		};
 	}
 
 }

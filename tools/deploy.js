@@ -60,6 +60,7 @@ archive.on('error', function (err) {
 console.log(chalk.processing('Zipping up files...'));
 archive.pipe(output);
 archive.directory('./dist', false);
-archive.directory('./node_modules', false);
+archive.directory('./node_modules', true);
 archive.file('./package.json', {name: 'package.json'});
+archive.file('./src/hello-engage-a735c55c95c7.json', {name: 'hello-engage-a735c55c95c7.json'});
 archive.finalize();
