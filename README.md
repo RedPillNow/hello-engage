@@ -2,6 +2,92 @@
 
 This is the hello-engage Alexa skill. It is meant to demonstrate surfacing data from Domino via Alexa. It is mainly meant to be used like a kiosk to ask about sessions occurring during Engage 2018 in Rotterdam.
 
+## Usage
+
+The invocation phrase is still being developed. However, once past the invocation we have the following phrases to search for sessions:
+
+### Sessions
+
+This performs a query on a Firebase Cloud Firestore database (See Relevant Links)
+* which sessions are up next
+* what sessions are up next
+* what are the upcoming sessions
+* get upcoming sessions
+* get sessions happening at {AMAZON.TIME}
+* show sessions happening at {AMAZON.TIME}
+* which sessions are happening at {AMAZON.TIME}
+* get sessions beginning at {AMAZON.TIME}
+* show sessions beginning at {AMAZON.TIME}
+* get the {AMAZON.TIME} sessions
+* get sessions at {AMAZON.TIME}
+* show sessions at {AMAZON.TIME}
+* get sessions by {AMAZON.Person}
+* show sessions by {AMAZON.Person}
+* when is {AMAZON.Person} speaking
+* get sessions in {AMAZON.Room}
+* show sessions in {AMAZON.Room}
+* which sessions are in {AMAZON.Room}
+* get sessions by {AMAZON.Organization}
+* show sessions by {AMAZON.Organization}
+
+### Help
+* some assistance please
+* I need help
+* help
+* how do I use this
+* I need some help
+* help me
+
+### Greeting
+
+Will deliver a random greeting, some even in other languages. Currently there are 7 greetings which are randomly chosen.
+* hello
+* hello red pill
+* hello engage
+* greetings
+* howdy
+* howdy red pill
+* hey
+* what's up
+* what's happening
+
+### Repeat
+
+Will repeat the last thing said
+* repeat
+* say that again
+* say again
+* what did you say
+* repeat that
+
+### No
+
+Used to answer if the read session is the one the user was looking for
+* negative
+* that's not it
+* nope
+* not this one
+* not that one
+* no
+
+### Yes
+
+Used to answer if the read session is the one the user was looking for. When used, will end the session.
+* affirmative
+* that's the one
+* yup that's it
+* yes that's it
+* ok
+* yup
+* yes
+
+
+### Cancel
+
+Stops and Ends the session.
+* cancel
+* stop
+
 ## Requirements
 
 The following is required to develop for this skill.
@@ -10,6 +96,11 @@ The following is required to develop for this skill.
 * ask-sdk
 * ask-sdk-core
 * ask-sdk-model
+* firebase-admin
+* request
+* request-promise
+* moment
+* TypeScript 2.8.3
 
 ## NPM Tasks
 
@@ -22,7 +113,18 @@ The following tasks are available. More information can be found in `package.jso
 * `compile` - Compile all TypeScript to JavaScript and place in the dist directory
 * `deploy` - run the `compile` task, create a `hello-engage-alexa-skill.zip` file and include `node_modules` and `package.json`
 
-## Relevant Amazon links
+## Node Scripts
+
+The following node scripts are included in this project
+
+* `bump-version.js` - Bumps the version numbers
+* `chalkConfig.js` - Configuration for chalk colors
+* `cleanCompilerFiles.js` - Deletes .js and .map files
+* `compileTs.js` - Compiles TypeScript based on `tsconfig.json`
+* `deploy.js` - Zips up and deploys files to `AWS Lambda`
+* `firestore-import.js` - Imports the `firebase-entries-import.json` file into `Firestore`. Uses `hello-engage-a735c55c95c7.json` for authentication. That file is the private/public key for a service account.
+
+## Relevant Links
 
 This skill uses AWS Lambda along with the Alexa Developer Console.
 
