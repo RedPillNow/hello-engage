@@ -9,6 +9,7 @@ The invocation phrase is still being developed. However, once past the invocatio
 ### Sessions
 
 This performs a query on a Firebase Cloud Firestore database (See Relevant Links)
+
 * which sessions are up next
 * what sessions are up next
 * what are the upcoming sessions
@@ -31,6 +32,7 @@ This performs a query on a Firebase Cloud Firestore database (See Relevant Links
 * show sessions by {AMAZON.Organization}
 
 ### Help
+
 * some assistance please
 * I need help
 * help
@@ -41,6 +43,7 @@ This performs a query on a Firebase Cloud Firestore database (See Relevant Links
 ### Greeting
 
 Will deliver a random greeting, some even in other languages. Currently there are 7 greetings which are randomly chosen.
+
 * hello
 * hello red pill
 * hello engage
@@ -54,6 +57,7 @@ Will deliver a random greeting, some even in other languages. Currently there ar
 ### Repeat
 
 Will repeat the last thing said
+
 * repeat
 * say that again
 * say again
@@ -63,6 +67,7 @@ Will repeat the last thing said
 ### No
 
 Used to answer if the read session is the one the user was looking for
+
 * negative
 * that's not it
 * nope
@@ -73,6 +78,7 @@ Used to answer if the read session is the one the user was looking for
 ### Yes
 
 Used to answer if the read session is the one the user was looking for. When used, will end the session.
+
 * affirmative
 * that's the one
 * yup that's it
@@ -85,6 +91,7 @@ Used to answer if the read session is the one the user was looking for. When use
 ### Cancel
 
 Stops and Ends the session.
+
 * cancel
 * stop
 
