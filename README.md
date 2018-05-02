@@ -30,3 +30,4 @@ This skill uses AWS Lambda along with the Alexa Developer Console.
 * `hello-engage` [Alexa Developer Console](https://developer.amazon.com/alexa/console/ask/build/custom/amzn1.ask.skill.70a2dcc9-453d-4786-979d-3231c79d76dc/development/en_US/dashboard)
 * AWS Lambda ARN: `arn:aws:lambda:us-west-2:215532694292:function:hello-engage-alexa-skill`
 * Alexa App ID: `amzn1.ask.skill.70a2dcc9-453d-4786-979d-3231c79d76dc`
+* `firebase cloud firestore` [hello-engage-69ff8](https://console.firebase.google.com/u/1/project/hello-engage-69ff8/overview)

@@ -1,9 +1,6 @@
 import * as Alexa from 'ask-sdk-core';
 import * as rpTypes from './types';
 import {Session} from '../models/session';
-import {Speaker} from '../models/speaker';
-import {DataHelper} from '../data/dataHelper';
-
 
 export class ResponseGenerator {
 
@@ -19,8 +16,12 @@ export class ResponseGenerator {
 	static get generalGreetingResponse(): rpTypes.TextResponse {
 		const greetingArr = [
 			'Hello, Thank you for trying "Hello Engage" from Red Pill Now.',
-			'Hello, Welcome to Engage 2018. Enjoy the conference',
-			'Howdy! This is "Hello Engage"! I can help you find sessions to attend, give me a try.'
+			'Hi, Welcome to Engage 2018. Enjoy the conference',
+			'Howdy! This is "Hello Engage"! I can help you find sessions to attend, give me a try.',
+			'Hola! ¡Esto es hola participar! Disfruta la conferencia',
+			'Hej! Dette er hej engagere! Nyd konferencen',
+			'Bu merhaba meşgul! Konferansın tadını çıkar',
+			'Hallå! Detta är hej engagera! Njut av konferensen'
 		]
 		let msg = greetingArr[Math.floor(Math.random() * greetingArr.length)];
 		return {
@@ -51,7 +52,26 @@ export class ResponseGenerator {
 		};
 	}
 
-	static getSessionsResp(foundSessions: any[], lastIdx: number) {
+	static get yesResponse(): rpTypes.TextResponse {
+		return {
+			textContent: new Alexa.PlainTextContentHelper()
+				.withPrimaryText('Excellent! Enjoy the session')
+				.getTextContent(),
+			cardTitle: 'Excellent! Enjoy the session'
+		};
+	}
+
+	static get noSessionsResponse(): rpTypes.TextResponse {
+		return {
+			textContent: new Alexa.PlainTextContentHelper()
+				.withPrimaryText('I don\'t have any sessions, please try again')
+				.getTextContent(),
+			cardTitle: 'I don\'t have any sessions, please try again',
+			cardText: 'I didn\'t find any sessions'
+		};
+	}
+
+	static getSessionsResp(foundSessions: any[], lastIdx: number): rpTypes.TextResponse {
 		console.log('ResponseGenerator.getSessionsResp, lastIdx=', lastIdx);
 		if (foundSessions && foundSessions.length > 0) {
 			let nextIdx = lastIdx + 1;
@@ -98,24 +118,4 @@ export class ResponseGenerator {
 		console.log('ResponseGenerator.getNoResponse', arguments);
 		return ResponseGenerator.getSessionsResp(foundSessions, lastIdx);
 	}
-
-	static get yesResponse(): rpTypes.TextResponse {
-		return {
-			textContent: new Alexa.PlainTextContentHelper()
-				.withPrimaryText('Excellent! Enjoy the session')
-				.getTextContent(),
-			cardTitle: 'Excellent! Enjoy the session'
-		};
-	}
-
-	static get noSessionsResponse(): rpTypes.TextResponse {
-		return {
-			textContent: new Alexa.PlainTextContentHelper()
-				.withPrimaryText('I don\'t have any sessions, please try again')
-				.getTextContent(),
-			cardTitle: 'I don\'t have any sessions, please try again',
-			cardText: 'I didn\'t find any sessions'
-		};
-	}
-
 }

@@ -28,38 +28,40 @@ export type TextResponse = {
 	cardText?: string
 }
 
-export type ViewData = {
-	'@timestamp': string,
-	'@toplevelentries': string,
-	'viewentry': ViewEntry[]
+export type FirestoreQuerySelect = {
+	fields: FirestoreQueryField[];
 }
 
-export type ViewEntry = {
-	'@position': string,
-	'@unid': string,
-	'@noteid': string,
-	'@siblings': string,
-	'entrydata': ViewEntryColumn[]
+export type FirestoreQueryFrom = {
+	collectionId: string;
 }
 
-export type ViewEntryColumn = {
-	'@columnnumber': string,
-	'@name': string,
-	'datetime'?: any,
-	'text'?: any
+export type FirestoreCompositeFilter = {
+	filters: any[],
+	op: string
 }
 
-/* export type Session = {
-	title: string,
-	speakers: Speaker[],
-	datetime: string,
-	room: string,
-	abstract: string,
-	spoken: Session
-} */
+export type FirestoreFieldFilter = {
+	field: any,
+	op: string,
+	value: any
+}
 
-export type Speaker = {
-	name: string,
-	photo: string,
-	org: string
+export type FirestoreQueryField = {
+	fieldPath: string;
+}
+
+export type FirestoreQueryWhere = {
+	compositeFilter?: FirestoreCompositeFilter;
+	fieldFilter?: FirestoreFieldFilter;
+}
+
+export type FirestoreStructuredQuery = {
+	select?: FirestoreQuerySelect,
+	from: FirestoreQueryFrom,
+	where: FirestoreQueryWhere
+}
+
+export type FirestoreQuery = {
+	structuredQuery?: FirestoreStructuredQuery;
 }

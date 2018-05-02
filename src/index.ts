@@ -1,9 +1,8 @@
 import * as Alexa from 'ask-sdk-core';
-import { Response, IntentRequest, Slot } from 'ask-sdk-model';
+import { Response, IntentRequest } from 'ask-sdk-model';
 import * as rpTypes from './commons/types';
 import {ResponseGenerator} from './commons/response-generator';
 import * as utils from './commons/utils';
-import {Session} from './models/session';
 import { DataHelper } from './data/dataHelper';
 
 const APP_ID = 'amzn1.ask.skill.6ae3d277-34f5-43c1-a52c-08b318becb16';
@@ -244,9 +243,13 @@ const ErrorHandler: rpTypes.IntentHandler = {
 	},
 	handle(handlerInput, error): Response {
 		console.log('ErrorHandler, error=', error);
+		let msg = error.message;
+		if (msg.includes('requires an index')) {
+			msg = 'An index is required for this query';
+		}
 		return handlerInput.responseBuilder
-			.speak('Sorry, an error occurred:' + error.message + '. Please say again')
-			.withSimpleCard('Sorry, an error occurred', error.message)
+			.speak('Sorry, an error occurred:' + msg + '. Please say again')
+			.withSimpleCard('Sorry, an error occurred: ', error.message)
 			.withShouldEndSession(true)
 			.getResponse();
 	}

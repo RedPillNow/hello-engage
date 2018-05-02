@@ -1,6 +1,24 @@
-import * as Alexa from 'ask-sdk-core';
 import { Slot } from 'ask-sdk-model';
 import * as rpTypes from './types';
+import * as moment from 'moment';
+import * as rp from 'request-promise';
+
+/**
+ * Perform an xhrRequest
+ * @param options The xhrOptions to peform an xhr request
+ * @returns {Promise<any>}
+ */
+export function doRequest(options: rpTypes.XhrOptions): Promise<any> {
+	options.json = options.json == null || options.json === undefined ? true : options.json;
+	options.method = options.method || 'GET';
+	options.headers = options.headers || {};
+	options.resolveFullResponse = options.resolveFullResponse === null || options.resolveFullResponse === undefined ? true : options.resolveFullResponse;
+	if (options.userName && options.password && !options.headers.Authorization) {
+		options.headers.Authorization = 'Basic a2VpdGggc3RyaWNrbGFuZDp0ZXN0MTIz';
+		options.headers['User-Agent'] = options.headers['User-Agent'] ? options.headers['User-Agent'] : 'Request-Promise';
+	}
+	return rp(options);
+}
 /**
  * Get the valid slot values
  * @param slots the object of slots provided in the handlerInput
@@ -74,7 +92,7 @@ export function getDbRoom(roomSlotValue: string): string {
 	}else if (roomSlotValue.toLowerCase() === 'guadaloupe') {
 		returnVal = 'B. Guadaloupe';
 	}else if (roomSlotValue.toLowerCase() === 'theater') {
-		returnVal = 'A. Theatre';
+		returnVal = 'A. Theater';
 	}else if (roomSlotValue.toLowerCase() === 'sky room') {
 		returnVal = 'E. Sky Room';
 	}else if (roomSlotValue.toLowerCase() === 'sun room') {
@@ -87,4 +105,42 @@ export function getDbRoom(roomSlotValue: string): string {
 		returnVal = 'Sponsor Area';
 	}
 	return returnVal;
+}
+/**
+ * Get the spoken date like 'Tomorrow at 1:30 PM'
+ * @param {string} dateTimeStr a dateTime String
+ * @param {string} refDate a reference date (i.e. what session date should we mimick)
+ */
+export function getSpokenDateText(dateTimeStr, refDate?) {
+	console.log('DataHelper.getSpokenDateText, dateTimeStr=', dateTimeStr);
+	let evtMoment: moment.Moment = moment(dateTimeStr);
+	let evtCal = evtMoment.calendar();
+	if (refDate) {
+		evtCal = evtMoment.calendar(refDate)
+	}
+	console.log('DataHelper.getSpokenDateText, evtCal=', evtCal);
+	let dateTimeArr = evtCal.split(' ');
+	dateTimeArr.splice(2, 0, '<say-as interpret-as="time">');
+	dateTimeArr.push('</say-as>');
+	let dateTimeText = dateTimeArr.join(' ');
+	console.log('DataHelper.getSpokenDateText returning', dateTimeText);
+	return dateTimeText;
+}
+/**
+ * Similar to getSpokenDateText however we don't include the "say-as" tag
+ * @param dateTimeStr a dateTime string
+ * @param refDate a reference date (i.e. what session date should we mimick)
+ */
+export function getPrintedDateText(dateTimeStr, refDate?) {
+	console.log('DataHelper.getPrinteDateText, dateTimeStr=', dateTimeStr);
+	let evtMoment: moment.Moment = moment(dateTimeStr);
+	let evtCal = evtMoment.calendar();
+	if (refDate) {
+		evtCal = evtMoment.calendar(refDate)
+	}
+	console.log('DataHelper.getDateText, evtCal=', evtCal);
+	let dateTimeArr = evtCal.split(' ');
+	let dateTimeText = dateTimeArr.join(' ');
+	console.log('DataHelper.getPrinteDateText returning', dateTimeText);
+	return dateTimeText;
 }

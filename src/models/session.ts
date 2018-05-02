@@ -1,5 +1,5 @@
 import { Speaker } from "./speaker";
-import { DataHelper } from '../data/dataHelper';
+import * as utils from '../commons/utils';
 
 export class Session {
 	_apiObj: any;
@@ -55,7 +55,7 @@ export class Session {
 			let time = this.sessionTime;
 			let unformatTime = time.replace(':','');
 			dateTimeStr = dateTimeStr + 'T' + unformatTime;
-			dateTimeStr = DataHelper.getSpokenDateText(dateTimeStr, new Date('5/21/2018'));
+			dateTimeStr = utils.getSpokenDateText(dateTimeStr, new Date('5/21/2018'));
 			dateTimeStr = dateTimeStr.replace(' </say-as>', '</say-as>');
 			dateTimeStr = dateTimeStr.replace('"time"> ', '"time">');
 			spokenDate = dateTimeStr;
@@ -70,7 +70,7 @@ export class Session {
 			let time = this.sessionTime;
 			let unformatTime = time.replace(':','');
 			dateTimeStr = dateTimeStr + 'T' + unformatTime;
-			dateTimeStr = DataHelper.getPrintedDateText(dateTimeStr, new Date('5/21/2018'));
+			dateTimeStr = utils.getPrintedDateText(dateTimeStr, new Date('5/21/2018'));
 			spokenDate = dateTimeStr;
 		}
 		return spokenDate;
