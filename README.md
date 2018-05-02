@@ -8,7 +8,7 @@ The invocation phrase is still being developed. However, once past the invocatio
 
 ### Sessions
 
-This performs a query on a Firebase Cloud Firestore database (See Relevant Links)
+This performs a query on a Firebase Cloud Firestore database (See Relevant Links). If no SLOT values are encountered or delivered with the request, will respond with sessions coming up or happening next.
 
 * which sessions are up next
 * what sessions are up next
