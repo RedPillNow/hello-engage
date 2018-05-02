@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import {Speaker} from '../models/speaker';
 
 export enum RequestType {
-	ByRoom, BySpeaker, ByTime
+	ByRoom, BySpeaker, ByTime, ByOrg
 }
 
 export class DataHelper {
@@ -75,6 +75,9 @@ export class DataHelper {
 				opts.body = DataHelper.getRequestBody(RequestType.ByRoom, room);
 			} else if (slots['SessionName']) {
 
+			} else if (slots['AMAZON.Organization']) {
+				let org = slots['AMAZON.Organization'];
+				opts.body = DataHelper.getRequestBody(RequestType.ByOrg, org);
 			}
 			return utils.doRequest(opts);
 		} else {
@@ -162,6 +165,17 @@ export class DataHelper {
 					op: 'LESS_THAN_OR_EQUAL',
 					value: {stringValue: untilTimeValue}
 				}});
+				break;
+			case RequestType.ByOrg:
+				console.log('DataHelper.getCompositeFilters, by org');
+				compFilters.push({
+					fieldFilter: {
+						field: {fieldPath: 'speaker_org'},
+						op: 'EQUAL',
+						value: {stringValue: searchValue}
+					}
+				});
+				compFilters = compFilters.concat(this.getFilterRestraint(now));
 				break;
 		}
 		return compFilters;

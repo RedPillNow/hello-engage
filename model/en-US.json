@@ -38,6 +38,10 @@
                         {
                             "name": "SessionName",
                             "type": "SessionName"
+                        },
+                        {
+                            "name": "AMAZON.Organization",
+                            "type": "AMAZON.Organization"
                         }
                     ],
                     "samples": [
@@ -74,7 +78,9 @@
                         "who is speaking next in the {AMAZON.Room} room",
                         "what is {SessionName} about",
                         "when is {AMAZON.Person} speaking",
-                        "when is the {SessionName} session"
+                        "when is the {SessionName} session",
+                        "get sessions by {AMAZON.Organization}",
+                        "show sessions by {AMAZON.Organization}"
                     ]
                 },
                 {
@@ -190,27 +196,51 @@
                         },
                         {
                             "name": {
-                                "value": "Sky Room"
+                                "value": "Sky Room",
+                                "synonyms": [
+                                    "E",
+                                    "E. Sky",
+                                    "Sky",
+                                    "E. Sky Room"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "Theatre"
+                                "value": "Theatre",
+                                "synonyms": [
+                                    "A",
+                                    "A. Theatre"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "Sun Room"
+                                "value": "Sun Room",
+                                "synonyms": [
+                                    "D",
+                                    "D. Sun Room",
+                                    "D. Sun",
+                                    "Sun"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "Trinidad"
+                                "value": "Trinidad",
+                                "synonyms": [
+                                    "C",
+                                    "C. Trinidad"
+                                ]
                             }
                         },
                         {
                             "name": {
-                                "value": "Guadaloupe"
+                                "value": "Guadaloupe",
+                                "synonyms": [
+                                    "B",
+                                    "B. Guadaloupe"
+                                ]
                             }
                         }
                     ]
@@ -323,7 +353,197 @@
                     "values": [
                         {
                             "name": {
+                                "value": "Jason Roy Gary",
+                                "synonyms": [
+                                    "Jason Gary"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Nathan Freeman",
+                                "synonyms": [
+                                    "the ntf",
+                                    "ntf",
+                                    "freeman",
+                                    "n t f",
+                                    "the n t f"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
                                 "value": "Peter Presnell"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "AMAZON.Organization",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "B C C",
+                                "synonyms": [
+                                    "B C C Limited"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Firm"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Dan Notes"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Open N T F",
+                                "synonyms": [
+                                    "OpenNTF"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Docova"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Easi"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Prominic"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "e Office",
+                                "synonyms": [
+                                    "eOffice"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Ytria"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Cyone"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Cross Ware",
+                                "synonyms": [
+                                    "CrossWare"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Riva"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Time to Act Group",
+                                "synonyms": [
+                                    "TimeToAct Group"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "L D C Via",
+                                "synonyms": [
+                                    "L D C"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Workplace On",
+                                "synonyms": [
+                                    "WorkplaceON"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "HCL",
+                                "synonyms": [
+                                    "H C L"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Group Wave",
+                                "synonyms": [
+                                    "GroupWave"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Silver Side"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "OnTime",
+                                "synonyms": [
+                                    "On Time",
+                                    "OnTime Group Calendar",
+                                    "On Time Group Calendar"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Kudos"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "AppFusions",
+                                "synonyms": [
+                                    "App Fusions"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "IBM",
+                                "synonyms": [
+                                    "I B M"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Panagenda"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Red Pill Now",
+                                "synonyms": [
+                                    "RedPill Development",
+                                    "RedPill Now",
+                                    "RedPill",
+                                    "Red Pill Development",
+                                    "Red Pill"
+                                ]
                             }
                         }
                     ]

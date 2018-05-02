@@ -29,9 +29,21 @@ export function getSlotValues(slots) {
 	if (slots) {
 		for (let key in slots) {
 			let slot: Slot = slots[key];
-			if (slot.value) {
+			if (slot.value && !slot.resolutions) {
 				returnVal = returnVal || {};
 				returnVal[slot.name] = slot.value;
+			}else if (slot.value && slot.resolutions) {
+				returnVal = returnVal || {};
+				if (slot.resolutions.resolutionsPerAuthority && slot.resolutions.resolutionsPerAuthority.length > 0) {
+					if (slot.resolutions.resolutionsPerAuthority[0] && slot.resolutions.resolutionsPerAuthority[0].values && slot.resolutions.resolutionsPerAuthority[0].values.length > 0) {
+
+						returnVal[slot.name] = slot.resolutions.resolutionsPerAuthority[0].values[0].value.name;
+					}else {
+						returnVal[slot.name] = slot.value;
+					}
+				}else {
+					returnVal[slot.name] = slot.value;
+				}
 			}
 		}
 	}

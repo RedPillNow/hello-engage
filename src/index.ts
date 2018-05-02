@@ -165,7 +165,7 @@ const NoIntentHandler: rpTypes.IntentHandler = {
 			let speechText = 'Sorry, that\'s all the sessions we found. Please try again';
 			return handlerInput.responseBuilder
 				.speak(speechText)
-				.withShouldEndSession(true)
+				.withShouldEndSession(false)
 				.getResponse();
 		}else {
 			let noResp = ResponseGenerator.getNoResponse(foundSessions, lastIdx);
