@@ -25,7 +25,8 @@ export type TextResponse = {
 	reprompt?: string,
 	cardTitle: string,
 	renderTemplate?: Template,
-	cardText?: string
+	cardText?: string,
+	cardImage?: string
 }
 
 export type FirestoreQuerySelect = {

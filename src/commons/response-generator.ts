@@ -85,11 +85,11 @@ export class ResponseGenerator {
 				sess = new Session(apiObj);
 			}
 			console.log('ResponseGenerator.getSessionsResp, sess=', JSON.stringify(sess));
-			let primaryText = sess.spokenTitle;
-			primaryText += ' by ' + sess.spokenSpeakers;
-			primaryText += ', in the ' + sess.spokenRoom;
-			primaryText += ', ' + sess.spokenDate + '.';
-			primaryText += ' Is this the one you\'re looking for?';
+			let spokenText = sess.spokenTitle;
+			spokenText += ' by ' + sess.spokenSpeakers;
+			spokenText += ', in the ' + sess.spokenRoom;
+			spokenText += ', ' + sess.spokenDate + '.';
+			spokenText += ' Is this the one you\'re looking for?';
 			let cardText = sess.sessionTitle;
 			cardText += ' by ' + sess.spokenSpeakers;
 			cardText += ', in the ' + sess.sessionRoom;
@@ -97,10 +97,11 @@ export class ResponseGenerator {
 			cardText += ' Is this the one you\'re looking for?';
 			let resp = {
 				textContent: new Alexa.PlainTextContentHelper()
-					.withPrimaryText(primaryText)
+					.withPrimaryText(spokenText)
 					.getTextContent(),
-				cardTitle: sess.sessionTitle.replace('&', 'and'),
-				cardText: cardText
+				cardTitle: sess.cardTitle,
+				cardText: cardText,
+				cardImage: sess.speakers && sess.speakers[0] ? sess.speakers[0].photoUrl : null
 			};
 			console.log('ResponseGenerator.getSessionsResp, resp=', resp);
 			return resp;

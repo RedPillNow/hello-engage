@@ -67,17 +67,17 @@ export class DataHelper {
 			if (slots['AMAZON.Person']) {
 				let speaker = new Speaker();
 				speaker.name = utils.toTitleCase(slots['AMAZON.Person']);
-				opts.body = DataHelper.getRequestBody(RequestType.BySpeaker, speaker.name);
+				opts.body = DataHelper.getQueryParams(RequestType.BySpeaker, speaker.name);
 			} else if (slots['AMAZON.TIME']) {
-				opts.body = DataHelper.getRequestBody(RequestType.ByTime, slots['AMAZON.TIME']);
+				opts.body = DataHelper.getQueryParams(RequestType.ByTime, slots['AMAZON.TIME']);
 			} else if (slots['AMAZON.Room']) {
 				let room = utils.getDbRoom(slots['AMAZON.Room']);
-				opts.body = DataHelper.getRequestBody(RequestType.ByRoom, room);
+				opts.body = DataHelper.getQueryParams(RequestType.ByRoom, room);
 			} else if (slots['SessionName']) {
 
 			} else if (slots['AMAZON.Organization']) {
 				let org = slots['AMAZON.Organization'];
-				opts.body = DataHelper.getRequestBody(RequestType.ByOrg, org);
+				opts.body = DataHelper.getQueryParams(RequestType.ByOrg, org);
 			}
 			return utils.doRequest(opts);
 		} else {
@@ -87,7 +87,7 @@ export class DataHelper {
 			let nearestQuarter = utils.getNearestQuarterHour();
 			mom.minute(nearestQuarter);
 			let startTimeValue = mom.format('kk:mm');
-			opts.body = DataHelper.getRequestBody(RequestType.ByTime, startTimeValue);
+			opts.body = DataHelper.getQueryParams(RequestType.ByTime, startTimeValue);
 			return utils.doRequest(opts);
 		}
 	}
@@ -97,7 +97,7 @@ export class DataHelper {
 	 * @param searchValue The value we're searching for
 	 * @returns {rpTypes.FirestoreQuery}
 	 */
-	static getRequestBody(requestType: RequestType, searchValue: string): rpTypes.FirestoreQuery {
+	static getQueryParams(requestType: RequestType, searchValue: string): rpTypes.FirestoreQuery {
 		let body: rpTypes.FirestoreQuery = {};
 		let structQuery: rpTypes.FirestoreStructuredQuery = {
 			select: {fields: this.fields},

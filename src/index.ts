@@ -103,7 +103,7 @@ const SessionsIntentHandler: rpTypes.IntentHandler = {
 
 			return handlerInput.responseBuilder
 				.speak(speechTxt)
-				.withSimpleCard(currSessResp.cardTitle, currSessResp.cardText)
+				.withStandardCard(currSessResp.cardTitle, currSessResp.cardText, currSessResp.cardImage)
 				.withShouldEndSession(false)
 				.getResponse();
 		}
@@ -175,7 +175,7 @@ const NoIntentHandler: rpTypes.IntentHandler = {
 			sessAttrs.lastFoundIndex = lastIdx + 1;
 			return handlerInput.responseBuilder
 				.speak(speechTxt)
-				.withSimpleCard(noResp.cardTitle, speechTxt)
+				.withStandardCard(noResp.cardTitle, noResp.cardText, noResp.cardImage)
 				.withShouldEndSession(false)
 				.getResponse();
 		}

@@ -13,6 +13,7 @@ export class Session {
 	private _session_abstract: string; // $37
 	private _session_speakers: Speaker[];
 	private _session_subtype: string; // $36
+	private refDate: Date = new Date('05/21/2018');
 
 	constructor(apiObj) {
 		this._apiObj = apiObj;
@@ -55,7 +56,7 @@ export class Session {
 			let time = this.sessionTime;
 			let unformatTime = time.replace(':','');
 			dateTimeStr = dateTimeStr + 'T' + unformatTime;
-			dateTimeStr = utils.getSpokenDateText(dateTimeStr, new Date('5/21/2018'));
+			dateTimeStr = utils.getSpokenDateText(dateTimeStr, this.refDate);
 			dateTimeStr = dateTimeStr.replace(' </say-as>', '</say-as>');
 			dateTimeStr = dateTimeStr.replace('"time"> ', '"time">');
 			spokenDate = dateTimeStr;
@@ -70,7 +71,7 @@ export class Session {
 			let time = this.sessionTime;
 			let unformatTime = time.replace(':','');
 			dateTimeStr = dateTimeStr + 'T' + unformatTime;
-			dateTimeStr = utils.getPrintedDateText(dateTimeStr, new Date('5/21/2018'));
+			dateTimeStr = utils.getPrintedDateText(dateTimeStr, this.refDate);
 			spokenDate = dateTimeStr;
 		}
 		return spokenDate;
@@ -155,10 +156,20 @@ export class Session {
 		this._session_title = sessionTitle;
 	}
 
+	get cardTitle() {
+		let title = null;
+		if (this.sessionTitle) {
+			title = this.sessionTitle.replace('&', 'and');
+		}
+		return title;
+	}
+
 	get spokenTitle() {
 		let spokenTitle = this.sessionTitle;
-		spokenTitle = spokenTitle.replace('(', '"');
-		spokenTitle = spokenTitle.replace(')', '"');
+		spokenTitle = spokenTitle.replace('(', '<emphasis level="moderate">');
+		spokenTitle = spokenTitle.replace(')', '</emphasis>');
+		spokenTitle = spokenTitle.replace('"', '<emphasis level="moderate">');
+		spokenTitle = spokenTitle.replace('"', '</emphasis>');
 		spokenTitle = spokenTitle.replace('&', 'and');
 		return spokenTitle;
 	}

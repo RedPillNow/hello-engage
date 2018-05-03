@@ -23,6 +23,8 @@ export function doRequest(options: rpTypes.XhrOptions): Promise<any> {
  * Get the valid slot values
  * @param slots the object of slots provided in the handlerInput
  * @returns {any}
+ * @todo: need to make this a little more robust instead of assuming different things are
+ * actually there
  */
 export function getSlotValues(slots) {
 	let returnVal = null;
