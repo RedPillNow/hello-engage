@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import {Speaker} from '../models/speaker';
 
 export enum RequestType {
-	ByRoom, BySpeaker, ByTime, ByOrg
+	ByRoom, BySpeaker, ByTime, ByOrg, BySession
 }
 
 export class DataHelper {
@@ -71,14 +71,16 @@ export class DataHelper {
 			} else if (slots['AMAZON.TIME']) {
 				opts.body = DataHelper.getQueryParams(RequestType.ByTime, slots['AMAZON.TIME']);
 			} else if (slots['AMAZON.Room']) {
-				let room = utils.getDbRoom(slots['AMAZON.Room']);
+				let room = slots['AMAZON.Room'];
 				opts.body = DataHelper.getQueryParams(RequestType.ByRoom, room);
 			} else if (slots['SessionName']) {
-
+				let sessName = slots['SessionName'];
+				opts.body = DataHelper.getQueryParams(RequestType.BySession, sessName);
 			} else if (slots['AMAZON.Organization']) {
 				let org = slots['AMAZON.Organization'];
 				opts.body = DataHelper.getQueryParams(RequestType.ByOrg, org);
 			}
+			console.log('ResponseGenerator.findSessions, body=', JSON.stringify(opts.body));
 			return utils.doRequest(opts);
 		} else {
 			let now = new Date('5/22/2018 01:22 PM');
@@ -171,6 +173,17 @@ export class DataHelper {
 				compFilters.push({
 					fieldFilter: {
 						field: {fieldPath: 'speaker_org'},
+						op: 'EQUAL',
+						value: {stringValue: searchValue}
+					}
+				});
+				compFilters = compFilters.concat(this.getFilterRestraint(now));
+				break;
+			case RequestType.BySession:
+				console.log('DataHelper.getCompositeFilters, by sessionName');
+				compFilters.push({
+					fieldFilter: {
+						field: {fieldPath: 'session_title'},
 						op: 'EQUAL',
 						value: {stringValue: searchValue}
 					}

@@ -98,6 +98,7 @@ export function getNearestQuarterHour(): number {
  * Get the value to search firebase for the room
  * @param roomSlotValue The spoken room name
  * @returns {string}
+ * @deprecated - Seems I didn't understand how the slots work
  */
 export function getDbRoom(roomSlotValue: string): string {
 	let returnVal = null;
@@ -146,7 +147,7 @@ export function getSpokenDateText(dateTimeStr, refDate?) {
  * @param refDate a reference date (i.e. what session date should we mimick)
  */
 export function getPrintedDateText(dateTimeStr, refDate?) {
-	console.log('DataHelper.getPrinteDateText, dateTimeStr=', dateTimeStr);
+	console.log('DataHelper.getPrintedDateText, dateTimeStr=', dateTimeStr);
 	let evtMoment: moment.Moment = moment(dateTimeStr);
 	let evtCal = evtMoment.calendar();
 	if (refDate) {

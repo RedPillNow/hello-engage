@@ -59,6 +59,9 @@ const SessionsRequestInterceptor = {
 		if (canHandle) {
 			// console.log('SessionsRequestInterceptor');
 			let sessAttrs = handlerInput.attributesManager.getSessionAttributes();
+			if (sessAttrs.foundSessions) {
+				sessAttrs.foundSessions = null;
+			}
 			let vals = utils.getSlotValues((<IntentRequest> handlerInput.requestEnvelope.request).intent.slots);
 			return DataHelper.findSessions(vals)
 				.then((response) => {
