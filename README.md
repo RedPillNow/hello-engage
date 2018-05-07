@@ -99,15 +99,15 @@ Stops and Ends the session.
 
 The following is required to develop for this skill.
 
-* nodejs 4.3 or greater
-* ask-sdk
-* ask-sdk-core
-* ask-sdk-model
-* firebase-admin
-* request
-* request-promise
-* moment
-* TypeScript 2.8.3
+* [nodejs 4.3 or greater](https://nodejs.org/en/)
+* [ask-sdk](https://github.com/alexa/alexa-skills-kit-sdk-for-nodejs)
+* [ask-sdk-core](https://github.com/alexa/alexa-skills-kit-sdk-for-nodejs)
+* [ask-sdk-model](https://github.com/alexa/alexa-skills-kit-sdk-for-nodejs)
+* [firebase-admin](https://www.npmjs.com/package/firebase-admin)
+* [request](https://www.npmjs.com/package/request)
+* [request-promise](https://www.npmjs.com/package/request-promise)
+* [moment](https://www.npmjs.com/package/moment)
+* [TypeScript 2.8.3](https://www.npmjs.com/package/typescript)
 
 ## NPM Tasks
 
