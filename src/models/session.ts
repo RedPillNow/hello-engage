@@ -168,8 +168,8 @@ export class Session {
 		let spokenTitle = this.sessionTitle;
 		spokenTitle = spokenTitle.replace('(', '<emphasis level="moderate">');
 		spokenTitle = spokenTitle.replace(')', '</emphasis>');
-		spokenTitle = spokenTitle.replace('"', '<emphasis level="moderate">');
-		spokenTitle = spokenTitle.replace('"', '</emphasis>');
+		// spokenTitle = spokenTitle.replace('"', '<emphasis level="moderate">');
+		// spokenTitle = spokenTitle.replace('"', '</emphasis>');
 		spokenTitle = spokenTitle.replace('&', 'and');
 		return spokenTitle;
 	}
@@ -193,7 +193,7 @@ export class Session {
 				let primarySpk = new Speaker();
 				primarySpk.name = this.apiObj.document.fields.speaker_name.stringValue;
 				primarySpk.org = this.apiObj.document.fields.speaker_org.stringValue;
-				primarySpk.photoUrl = this.apiObj.document.fields.speaker_photourl.stringValue;
+				primarySpk.photoUrl = null; // this.apiObj.document.fields.speaker_photourl.stringValue;
 				primarySpk.logo = this.apiObj.document.fields.speaker_logo.stringValue;
 				primarySpk.profile = this.apiObj.document.fields.speaker_profile.stringValue;
 				primarySpk.location = null;
