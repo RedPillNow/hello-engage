@@ -65,7 +65,7 @@ const SessionsRequestInterceptor = {
 			let vals = utils.getSlotValues((<IntentRequest> handlerInput.requestEnvelope.request).intent.slots);
 			return DataHelper.findSessions(vals)
 				.then((response) => {
-					console.log('SessionsRequestInterceptor.findSessions.then, response=', response);
+					console.log('SessionsRequestInterceptor.findSessions.then, response=', JSON.stringify(response));
 					if (utils.isResponseValid(response)) {
 						sessAttrs.foundSessions = response;
 						handlerInput.attributesManager.setSessionAttributes(sessAttrs);
@@ -88,28 +88,23 @@ const SessionsIntentHandler: rpTypes.IntentHandler = {
 
 		let foundSessions = sessAttrs.foundSessions;
 		// console.log('SessionsIntentHandler, foundSessions=', JSON.stringify(foundSessions));
+		let currSessResp: rpTypes.TextResponse = null;
+		let speechTxt = null;
 		if (foundSessions) {
-			let currSessResp: rpTypes.TextResponse = ResponseGenerator.getSessionsResp(foundSessions, -1);
-			let speechTxt = currSessResp.textContent.primaryText.text;
+			currSessResp = ResponseGenerator.getSessionsResp(foundSessions, -1);
+			speechTxt = currSessResp.textContent.primaryText.text;
 			sessAttrs.speechOutput = speechTxt;
 			sessAttrs.lastFoundIndex = foundSessions.length > 0 ? 0 : -1;
 			handlerInput.attributesManager.setSessionAttributes(sessAttrs);
-			return handlerInput.responseBuilder
-				.speak(speechTxt)
-				.withSimpleCard(currSessResp.cardTitle, currSessResp.cardText)
-				.withShouldEndSession(false)
-				.getResponse();
 		}else {
-			// todo: we probably should just throw an error
-			let currSessResp = ResponseGenerator.noSessionsResponse;
-			let speechTxt = currSessResp.textContent.primaryText.text;
-
-			return handlerInput.responseBuilder
-				.speak(speechTxt)
-				.withStandardCard(currSessResp.cardTitle, currSessResp.cardText, currSessResp.cardImage)
-				.withShouldEndSession(false)
-				.getResponse();
+			currSessResp = ResponseGenerator.noSessionsResponse;
+			speechTxt = currSessResp.textContent.primaryText.text;
 		}
+		return handlerInput.responseBuilder
+			.speak(speechTxt)
+			.withStandardCard(currSessResp.cardTitle, currSessResp.cardText, currSessResp.cardImage)
+			.withShouldEndSession(false)
+			.getResponse();
 	}
 };
 /**
@@ -211,7 +206,7 @@ const RepeatIntentHandler: rpTypes.IntentHandler = {
 	handle(handlerInput: Alexa.HandlerInput): Response {
 		const sessionAttrs = handlerInput.attributesManager.getSessionAttributes();
 		console.log('RepeatIntentHandler, sessionAttrs=', sessionAttrs);
-		let speechTxt = sessionAttrs.speechOutput;
+		let speechTxt = sessionAttrs.speechOutput ? sessionAttrs.speechOutput : 'Sorry, there is nothing to repeat';
 		console.log('RepeatIntentHandler, speechTxt=', speechTxt);
 		return handlerInput.responseBuilder
 			.speak(speechTxt)

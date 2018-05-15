@@ -61,14 +61,9 @@ export class ResponseGenerator {
 		};
 	}
 
-	static get noSessionsResponse(): rpTypes.TextResponse {
-		return {
-			textContent: new Alexa.PlainTextContentHelper()
-				.withPrimaryText('I don\'t have any sessions, please try again')
-				.getTextContent(),
-			cardTitle: 'I don\'t have any sessions, please try again',
-			cardText: 'I didn\'t find any sessions'
-		};
+	static getNoResponse(foundSessions, lastIdx): rpTypes.TextResponse {
+		console.log('ResponseGenerator.getNoResponse', arguments);
+		return ResponseGenerator.getSessionsResp(foundSessions, lastIdx);
 	}
 
 	static getSessionsResp(foundSessions: any[], lastIdx: number): rpTypes.TextResponse {
@@ -115,8 +110,14 @@ export class ResponseGenerator {
 		}
 	}
 
-	static getNoResponse(foundSessions, lastIdx): rpTypes.TextResponse {
-		console.log('ResponseGenerator.getNoResponse', arguments);
-		return ResponseGenerator.getSessionsResp(foundSessions, lastIdx);
+	static get noSessionsResponse(): rpTypes.TextResponse {
+		return {
+			textContent: new Alexa.PlainTextContentHelper()
+				.withPrimaryText('I don\'t have any sessions, please try again')
+				.getTextContent(),
+			cardTitle: 'I don\'t have any sessions, please try again',
+			cardText: 'I didn\'t find any sessions'
+		};
 	}
+
 }

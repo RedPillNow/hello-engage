@@ -81,7 +81,7 @@ export class DataHelper {
 				opts.body = DataHelper.getQueryParams(RequestType.ByOrg, org);
 			}
 			console.log('ResponseGenerator.findSessions, body=', JSON.stringify(opts.body));
-			return utils.doRequest(opts);
+			// return utils.doRequest(opts);
 		} else {
 			let now = new Date('5/22/2018 01:22 PM');
 			let mom = moment(now);
@@ -90,8 +90,8 @@ export class DataHelper {
 			mom.minute(nearestQuarter);
 			let startTimeValue = mom.format('kk:mm');
 			opts.body = DataHelper.getQueryParams(RequestType.ByTime, startTimeValue);
-			return utils.doRequest(opts);
 		}
+		return utils.doRequest(opts);
 	}
 	/**
 	 * Get the body of a request which contains a query to be sent to firestore
