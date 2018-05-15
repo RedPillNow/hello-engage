@@ -95,33 +95,6 @@ export function getNearestQuarterHour(): number {
 	return minutes;
 }
 /**
- * Get the value to search firebase for the room
- * @param roomSlotValue The spoken room name
- * @returns {string}
- * @deprecated - Seems I didn't understand how the slots work
- */
-export function getDbRoom(roomSlotValue: string): string {
-	let returnVal = null;
-	if (roomSlotValue.toLowerCase() === 'honolulu') {
-		returnVal = 'Table 2 Honolulu';
-	}else if (roomSlotValue.toLowerCase() === 'guadaloupe') {
-		returnVal = 'B. Guadaloupe';
-	}else if (roomSlotValue.toLowerCase() === 'theater') {
-		returnVal = 'A. Theater';
-	}else if (roomSlotValue.toLowerCase() === 'sky room') {
-		returnVal = 'E. Sky Room';
-	}else if (roomSlotValue.toLowerCase() === 'sun room') {
-		returnVal = 'D. Sun Room';
-	}else if (roomSlotValue.toLowerCase() === 'vancouver') {
-		returnVal = 'Table 1 Vancouver';
-	}else if (roomSlotValue.toLowerCase() === 'trinidad') {
-		returnVal = 'C. Trinidad';
-	}else if (roomSlotValue.toLowerCase() === 'sponsor' || roomSlotValue.toLowerCase() === 'showroom' || roomSlotValue.toLowerCase() === 'floor') {
-		returnVal = 'Sponsor Area';
-	}
-	return returnVal;
-}
-/**
  * Get the spoken date like 'Tomorrow at 1:30 PM'
  * @param {string} dateTimeStr a dateTime String
  * @param {string} refDate a reference date (i.e. what session date should we mimick)
