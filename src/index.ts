@@ -25,6 +25,7 @@ const LaunchRequestHandler: rpTypes.IntentHandler = {
 			.speak(speechText)
 			.reprompt(speechText)
 			.withSimpleCard(resp.cardTitle, speechText)
+			.withShouldEndSession(false)
 			.getResponse();
 	}
 };
@@ -65,7 +66,6 @@ const SessionsRequestInterceptor = {
 			let vals = utils.getSlotValues((<IntentRequest> handlerInput.requestEnvelope.request).intent.slots);
 			return DataHelper.findSessions(vals)
 				.then((response) => {
-					console.log('SessionsRequestInterceptor.findSessions.then, response=', JSON.stringify(response));
 					if (utils.isResponseValid(response)) {
 						sessAttrs.foundSessions = response;
 						handlerInput.attributesManager.setSessionAttributes(sessAttrs);
@@ -83,11 +83,9 @@ const SessionsIntentHandler: rpTypes.IntentHandler = {
 		return handlerInput.requestEnvelope.request.type === 'IntentRequest' && handlerInput.requestEnvelope.request.intent.name === 'SessionsIntent';
 	},
 	handle(handlerInput: Alexa.HandlerInput): Response {
-		// console.log('SessionsIntentHandler, handlerInput=', handlerInput);
 		let sessAttrs = handlerInput.attributesManager.getSessionAttributes();
 
 		let foundSessions = sessAttrs.foundSessions;
-		// console.log('SessionsIntentHandler, foundSessions=', JSON.stringify(foundSessions));
 		let currSessResp: rpTypes.TextResponse = null;
 		let speechTxt = null;
 		if (foundSessions) {
@@ -261,10 +259,10 @@ export const handler = skillBuilder
 		GeneralGreetingIntentHandler,
 		HelpIntentHandler,
 		LaunchRequestHandler,
+		NoIntentHandler,
 		RepeatIntentHandler,
 		SessionEndedRequestHandler,
 		SessionsIntentHandler,
-		NoIntentHandler,
 		YesIntentHandler
 	)
 	.addRequestInterceptors(SessionsRequestInterceptor)

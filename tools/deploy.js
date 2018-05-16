@@ -41,7 +41,7 @@ output.on('close', function () {
 			throw new Error(stdErr);
 		} else {
 			console.log(chalk.processing('Deployment Info'));
-			console.log(stdOut);
+			console.log(chalk.success(stdOut));
 			let deployTime = new Date();
 			console.log(chalk.success('Deployment Done: ' + deployTime.toDateString() + ' ' + deployTime.toLocaleTimeString()));
 		}

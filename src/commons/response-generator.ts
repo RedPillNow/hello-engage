@@ -79,7 +79,6 @@ export class ResponseGenerator {
 				let apiObj = foundSessions[nextIdx]._apiObj ? foundSessions[nextIdx]._apiObj : foundSessions[nextIdx];
 				sess = new Session(apiObj);
 			}
-			console.log('ResponseGenerator.getSessionsResp, sess=', JSON.stringify(sess));
 			let spokenText = sess.spokenTitle;
 			spokenText += ' by ' + sess.spokenSpeakers;
 			spokenText += ', in the ' + sess.spokenRoom;
@@ -98,7 +97,6 @@ export class ResponseGenerator {
 				cardText: cardText,
 				cardImage: sess.speakers && sess.speakers[0] ? sess.speakers[0].photoUrl : null
 			};
-			console.log('ResponseGenerator.getSessionsResp, resp=', resp);
 			return resp;
 		}else {
 			return {

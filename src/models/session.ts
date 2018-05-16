@@ -166,10 +166,24 @@ export class Session {
 
 	get spokenTitle() {
 		let spokenTitle = this.sessionTitle;
-		spokenTitle = spokenTitle.replace('(', '<emphasis level="moderate">');
-		spokenTitle = spokenTitle.replace(')', '</emphasis>');
-		// spokenTitle = spokenTitle.replace('"', '<emphasis level="moderate">');
-		// spokenTitle = spokenTitle.replace('"', '</emphasis>');
+		if (this.sessionTitle.indexOf('(') > -1 && this.sessionTitle.indexOf(')') > -1) {
+			let regex = /^(?:[\w 0-9-_=&]*)(\(([\w 0-9-_=&]*)\))(?:[\w 0-9-_=&]*)$/;
+			let results = spokenTitle.match(regex);
+			if (results && results.length > 0) {
+				let replaceStr = results[1];
+				let replaceTxt = '<emphasis level="strong">' + results[2] + '</emphasis>';
+				spokenTitle = spokenTitle.replace(replaceStr, replaceTxt);
+			}
+		}
+		if (this.sessionTitle.indexOf('"') > -1) {
+			let regex = /^(?:[\w 0-9-_=&]*)("([\w 0-9-_=&]*)")(?:[\w 0-9-_=&]*)$/;
+			let results = spokenTitle.match(regex);
+			if (results && results.length > 0) {
+				let replaceStr = results[1];
+				let replaceTxt = '<emphasis level="strong">' + results[2] + '</emphasis>';
+				spokenTitle = spokenTitle.replace(replaceStr, replaceTxt);
+			}
+		}
 		spokenTitle = spokenTitle.replace('&', 'and');
 		return spokenTitle;
 	}
