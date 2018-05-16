@@ -1,3 +1,10 @@
+/**
+ * This uses the aws-cli which must be installed locally and provided
+ * with your authentication credentials. If you intend to use this
+ * personally you will need to update the following:
+ * zipFilePath = What you want your zip file to be named
+ * functionName = What you name your Lambda function in AWS
+ */
 'use strict';
 
 const fs = require('fs');
