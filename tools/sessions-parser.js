@@ -47,7 +47,7 @@ if (outputFileName) {
 	console.log(chalk.success('Finished writing ' + fileName));
 }else {
 	console.log(chalk.warning('No output file was defined, just printing to the console.'));
-	console.log(JSON.stringify(slotVals));
+	console.log(JSON.stringify(slotVals, 'utf-8', 4));
 	process.exit();
 }
 

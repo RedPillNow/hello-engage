@@ -56,21 +56,39 @@ const GeneralGreetingIntentHandler: rpTypes.IntentHandler = {
  */
 const SessionsRequestInterceptor = {
 	process(handlerInput: Alexa.HandlerInput): Promise<void> {
-		let canHandle = handlerInput.requestEnvelope.request.type === 'IntentRequest' && handlerInput.requestEnvelope.request.intent.name === 'SessionsIntent';
-		if (canHandle) {
-			// console.log('SessionsRequestInterceptor');
-			let sessAttrs = handlerInput.attributesManager.getSessionAttributes();
-			if (sessAttrs.foundSessions) {
-				sessAttrs.foundSessions = null;
+		let requestType = handlerInput.requestEnvelope.request.type;
+		if (requestType === 'IntentRequest') {
+			let canHandle = false;
+			let intent = (<IntentRequest> handlerInput.requestEnvelope.request).intent;
+			let intentName = intent.name;
+			if (intentName === 'SessionsIntent') {
+				canHandle = true;
 			}
-			let vals = utils.getSlotValues((<IntentRequest> handlerInput.requestEnvelope.request).intent.slots);
-			return DataHelper.findSessions(vals)
-				.then((response) => {
-					if (utils.isResponseValid(response)) {
-						sessAttrs.foundSessions = response;
-						handlerInput.attributesManager.setSessionAttributes(sessAttrs);
-					}
-				});
+			console.log('SessionsRequestInterceptor, canHandle=', canHandle);
+			if (canHandle) {
+				let sessAttrs = handlerInput.attributesManager.getSessionAttributes();
+				if (sessAttrs.foundSessions && intentName === 'SessionsIntent') {
+					delete sessAttrs.foundSessions;
+					delete sessAttrs.nextSlotIdx;
+					delete sessAttrs.slotVals;
+					delete sessAttrs.lastFoundIndex;
+				}
+				let slots = intent.slots;
+				let multiSlotVals = slots['SessionName'].value ? true : false;
+				let slotVals = utils.getSlotValues(slots, multiSlotVals);
+				let slotVal = multiSlotVals ? {SessionName: slotVals['SessionName'][0]} : slotVals;
+				return DataHelper.findSessions(slotVal)
+					.then((response) => {
+						if (utils.isResponseValid(response)) {
+							sessAttrs.foundSessions = response;
+							if (multiSlotVals) {
+								sessAttrs.slotVals = slotVals;
+								sessAttrs.nextSlotIdx = 1;
+							}
+							handlerInput.attributesManager.setSessionAttributes(sessAttrs);
+						}
+					});
+			}
 		}
 		return null;
 	}
@@ -147,6 +165,45 @@ const HelpIntentHandler: rpTypes.IntentHandler = {
 	}
 }
 /**
+ * This is actually an ALL request interceptor. However, we include a 'canHandle'
+ * determination that only actually does anything for the NoIntent.
+ * Will fetch the sessions based on the slot values available
+ */
+const NoRequestInterceptor = {
+	process(handlerInput: Alexa.HandlerInput) {
+		let requestType = handlerInput.requestEnvelope.request.type;
+		if (requestType === 'IntentRequest') {
+			let canHandle = false;
+			let intent = (<IntentRequest> handlerInput.requestEnvelope.request).intent;
+			let intentName = intent.name;
+			if (intentName === 'NoIntent') {
+				canHandle = true;
+			}
+			if (canHandle) {
+				let sessAttrs = handlerInput.attributesManager.getSessionAttributes();
+				if (sessAttrs.slotVals) {
+					delete sessAttrs.foundSessions;
+					let nextSlotIdx = sessAttrs.nextSlotIdx ? sessAttrs.nextSlotIdx : 0;
+					if (nextSlotIdx <= sessAttrs.slotVals.SessionName.length - 1) {
+						let slotVals = sessAttrs.slotVals;
+						let slotVal = {'SessionName': slotVals['SessionName'][nextSlotIdx]};
+						return DataHelper.findSessions(slotVal)
+							.then((response) => {
+								if (utils.isResponseValid(response)) {
+									sessAttrs.foundSessions = response;
+									sessAttrs.slotVals = slotVals;
+									sessAttrs.nextSlotIdx = nextSlotIdx + 1;
+									handlerInput.attributesManager.setSessionAttributes(sessAttrs);
+								}
+							});
+					}
+				}
+			}
+		}
+		return null;
+	}
+}
+/**
  * No Intent handler. Will read off the next found session
  */
 const NoIntentHandler: rpTypes.IntentHandler = {
@@ -155,20 +212,33 @@ const NoIntentHandler: rpTypes.IntentHandler = {
 	},
 	handle(handlerInput: Alexa.HandlerInput): Response {
 		let sessAttrs = handlerInput.attributesManager.getSessionAttributes();
-		let lastIdx = sessAttrs.lastFoundIndex;
-		let foundSessions = sessAttrs.foundSessions;
-		if (lastIdx + 1 === foundSessions.length) { // There are no more
-			let speechText = 'Sorry, that\'s all the sessions we found. Please try again';
-			return handlerInput.responseBuilder
-				.speak(speechText)
-				.withShouldEndSession(false)
-				.getResponse();
+		if (!sessAttrs.nextSlotIdx) {
+			let lastIdx = sessAttrs.lastFoundIndex;
+			let foundSessions = sessAttrs.foundSessions;
+			if (lastIdx + 1 === foundSessions.length) { // There are no more
+				let speechText = 'Sorry, that\'s all the sessions we found. Please try again';
+				return handlerInput.responseBuilder
+					.speak(speechText)
+					.withShouldEndSession(false)
+					.getResponse();
+			}else {
+				let noResp = ResponseGenerator.getNoResponse(foundSessions, lastIdx);
+				let speechTxt = noResp.textContent.primaryText.text;
+
+				sessAttrs.speechOutput = speechTxt;
+				sessAttrs.lastFoundIndex = lastIdx + 1;
+				return handlerInput.responseBuilder
+					.speak(speechTxt)
+					.withStandardCard(noResp.cardTitle, noResp.cardText, noResp.cardImage)
+					.withShouldEndSession(false)
+					.getResponse();
+			}
 		}else {
-			let noResp = ResponseGenerator.getNoResponse(foundSessions, lastIdx);
+			let foundSessions = sessAttrs.foundSessions;
+			let noResp = ResponseGenerator.getNoResponse(foundSessions, -1);
 			let speechTxt = noResp.textContent.primaryText.text;
 
 			sessAttrs.speechOutput = speechTxt;
-			sessAttrs.lastFoundIndex = lastIdx + 1;
 			return handlerInput.responseBuilder
 				.speak(speechTxt)
 				.withStandardCard(noResp.cardTitle, noResp.cardText, noResp.cardImage)
@@ -185,12 +255,21 @@ const YesIntentHandler: rpTypes.IntentHandler = {
 		return handlerInput.requestEnvelope.request.type === 'IntentRequest' && handlerInput.requestEnvelope.request.intent.name === 'YesIntent';
 	},
 	handle(handlerInput: Alexa.HandlerInput): Response {
-		let yesResp: rpTypes.TextResponse = ResponseGenerator.yesResponse;
+		let sessAttrs = handlerInput.attributesManager.getSessionAttributes();
+		let yesResp: rpTypes.TextResponse = null;
+		let endSess = true;
+		if (sessAttrs.foundSessions && sessAttrs.foundSessions.length > 0) {
+			yesResp = ResponseGenerator.yesResponse;
+			endSess = true;
+		}else {
+			yesResp = ResponseGenerator.didntUnderstandResponse;
+			endSess = false;
+		}
 
 		return handlerInput.responseBuilder
 			.speak(yesResp.textContent.primaryText.text)
 			.withSimpleCard(yesResp.cardTitle, '')
-			.withShouldEndSession(true)
+			.withShouldEndSession(endSess)
 			.getResponse()
 	}
 }
@@ -265,6 +344,9 @@ export const handler = skillBuilder
 		SessionsIntentHandler,
 		YesIntentHandler
 	)
-	.addRequestInterceptors(SessionsRequestInterceptor)
+	.addRequestInterceptors(
+		SessionsRequestInterceptor,
+		NoRequestInterceptor
+	)
 	.addErrorHandlers(ErrorHandler)
 	.lambda();

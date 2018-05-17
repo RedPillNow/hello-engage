@@ -45,6 +45,7 @@
                         }
                     ],
                     "samples": [
+                        "get sessions about {SessionName}",
                         "for {AMAZON.TIME} sessions",
                         "for sessions by {AMAZON.Person}",
                         "which sessions are up next",
@@ -1181,6 +1182,7 @@
                             "name": {
                                 "value": "Nathan Freeman",
                                 "synonyms": [
+                                    "the n. t. f.",
                                     "the ntf",
                                     "ntf",
                                     "freeman",

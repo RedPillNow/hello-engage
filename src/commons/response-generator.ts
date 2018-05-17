@@ -67,15 +67,15 @@ export class ResponseGenerator {
 	}
 
 	static getSessionsResp(foundSessions: any[], lastIdx: number): rpTypes.TextResponse {
-		console.log('ResponseGenerator.getSessionsResp, lastIdx=', lastIdx);
+		// console.log('ResponseGenerator.getSessionsResp, lastIdx=', lastIdx);
 		if (foundSessions && foundSessions.length > 0) {
 			let nextIdx = lastIdx + 1;
 			let sess: Session = null;
 			if (foundSessions[nextIdx] instanceof Session) {
-				console.log('ResponseGenerator.getSessionsResp, got a Session');
+				// console.log('ResponseGenerator.getSessionsResp, got a Session');
 				sess = foundSessions[nextIdx];
 			}else {
-				console.log('ResponseGenerator.getSessionsResp, create a Session');
+				// console.log('ResponseGenerator.getSessionsResp, create a Session');
 				let apiObj = foundSessions[nextIdx]._apiObj ? foundSessions[nextIdx]._apiObj : foundSessions[nextIdx];
 				sess = new Session(apiObj);
 			}
@@ -115,6 +115,16 @@ export class ResponseGenerator {
 				.getTextContent(),
 			cardTitle: 'I don\'t have any sessions, please try again',
 			cardText: 'I didn\'t find any sessions'
+		};
+	}
+
+	static get didntUnderstandResponse(): rpTypes.TextResponse {
+		return {
+			textContent: new Alexa.PlainTextContentHelper()
+				.withPrimaryText('<emphasis level="strong">hmmm</emphasis>, maybe I didn\'t understand what you really said.')
+				.getTextContent(),
+			cardTitle: 'Maybe I didn\'t understand what you said',
+			cardText: 'I didn\'t understand what you said. Please try again.'
 		};
 	}
 

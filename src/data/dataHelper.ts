@@ -81,9 +81,8 @@ export class DataHelper {
 				opts.body = DataHelper.getQueryParams(RequestType.ByOrg, org);
 			}
 			console.log('ResponseGenerator.findSessions, body=', JSON.stringify(opts.body));
-			// return utils.doRequest(opts);
 		} else {
-			let now = new Date('5/22/2018 01:22 PM');
+			let now = new Date() < new Date('5/21/2018') ? new Date('5/22/2018 1:22 PM') : new Date();
 			let mom = moment(now);
 			let dateOnlyValue = mom.format('YYYYMMDD');
 			let nearestQuarter = utils.getNearestQuarterHour();
@@ -106,10 +105,7 @@ export class DataHelper {
 			from: {collectionId: 'sessions'},
 			where: null
 		};
-		console.log('DataHelper.getRequestBody, requestType', RequestType[requestType]);
-		console.log('DataHelper.getRequestBody, searchValue', searchValue);
 		if (requestType !== null && requestType !== undefined && searchValue) {
-			console.log('DataHelper.getReqeustBody, got a requestType & searchValue');
 			structQuery.where = {
 				compositeFilter: {
 					filters: DataHelper.getCompositeFilters(requestType, searchValue),
@@ -127,9 +123,8 @@ export class DataHelper {
 	 * @returns {any[]}
 	 */
 	static getCompositeFilters(requestType: RequestType, searchValue): any[] {
-		console.log('DataHelper.getCompositeFilters', arguments);
 		let compFilters = [];
-		let now = new Date('5/22/2018 1:00 PM');
+		let now = new Date() < new Date('5/21/2018') ? new Date('5/22/2018 1:22 PM') : new Date();
 		switch (+requestType) {
 			case RequestType.ByRoom:
 				console.log('DataHelper.getCompositeFilters, by room');
@@ -188,7 +183,6 @@ export class DataHelper {
 						value: {stringValue: searchValue}
 					}
 				});
-				compFilters = compFilters.concat(this.getFilterRestraint(now));
 				break;
 		}
 		return compFilters;
@@ -200,7 +194,6 @@ export class DataHelper {
 	 * @returns {any[]}
 	 */
 	static getFilterRestraint(now): any[] {
-		console.log('DataHelper.getFilterRestraint', arguments);
 		let mom = moment(now);
 		let dateOnlyValue = mom.format('YYYYMMDD');
 		if (mom.hour() > 0 && mom.hour() < 8) {

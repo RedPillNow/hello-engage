@@ -13,7 +13,7 @@ export class Session {
 	private _session_abstract: string; // $37
 	private _session_speakers: Speaker[];
 	private _session_subtype: string; // $36
-	private refDate: Date = new Date('05/22/2018');
+	private refDate: Date = new Date() < new Date('5/21/2018') ? new Date('5/22/2018') : new Date();
 
 	constructor(apiObj) {
 		this._apiObj = apiObj;

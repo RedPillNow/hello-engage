@@ -26,8 +26,9 @@ export function doRequest(options: rpTypes.XhrOptions): Promise<any> {
  * @todo: need to make this a little more robust instead of assuming different things are
  * actually there
  */
-export function getSlotValues(slots) {
+export function getSlotValues(slots, acceptMultiple?) {
 	let returnVal = null;
+	acceptMultiple = acceptMultiple === null || acceptMultiple === undefined ? false : acceptMultiple;
 	if (slots) {
 		for (let key in slots) {
 			let slot: Slot = slots[key];
@@ -35,11 +36,20 @@ export function getSlotValues(slots) {
 				returnVal = returnVal || {};
 				returnVal[slot.name] = slot.value;
 			}else if (slot.value && slot.resolutions) {
+				let resolutions = slot.resolutions;
+				let resolutionsAuthority = resolutions.resolutionsPerAuthority;
 				returnVal = returnVal || {};
-				if (slot.resolutions.resolutionsPerAuthority && slot.resolutions.resolutionsPerAuthority.length > 0) {
-					if (slot.resolutions.resolutionsPerAuthority[0] && slot.resolutions.resolutionsPerAuthority[0].values && slot.resolutions.resolutionsPerAuthority[0].values.length > 0) {
-
-						returnVal[slot.name] = slot.resolutions.resolutionsPerAuthority[0].values[0].value.name;
+				if (resolutionsAuthority && resolutionsAuthority.length > 0) {
+					if (resolutionsAuthority[0].values && resolutionsAuthority[0].values.length > 0) {
+						if (!acceptMultiple || resolutionsAuthority[0].values.length === 1) {
+							returnVal[slot.name] = slot.resolutions.resolutionsPerAuthority[0].values[0].value.name;
+						}else {
+							let slotValArr = [];
+							for (let i = 0; i < resolutionsAuthority[0].values.length; i++) {
+								slotValArr.push(resolutionsAuthority[0].values[i].value.name);
+							}
+							returnVal[slot.name] = slotValArr;
+						}
 					}else {
 						returnVal[slot.name] = slot.value;
 					}
@@ -100,18 +110,15 @@ export function getNearestQuarterHour(): number {
  * @param {string} refDate a reference date (i.e. what session date should we mimick)
  */
 export function getSpokenDateText(dateTimeStr, refDate?) {
-	console.log('DataHelper.getSpokenDateText, dateTimeStr=', dateTimeStr);
 	let evtMoment: moment.Moment = moment(dateTimeStr);
 	let evtCal = evtMoment.calendar();
 	if (refDate) {
 		evtCal = evtMoment.calendar(refDate)
 	}
-	console.log('DataHelper.getSpokenDateText, evtCal=', evtCal);
 	let dateTimeArr = evtCal.split(' ');
 	dateTimeArr.splice(2, 0, '<say-as interpret-as="time">');
 	dateTimeArr.push('</say-as>');
 	let dateTimeText = dateTimeArr.join(' ');
-	console.log('DataHelper.getSpokenDateText returning', dateTimeText);
 	return dateTimeText;
 }
 /**
@@ -120,15 +127,12 @@ export function getSpokenDateText(dateTimeStr, refDate?) {
  * @param refDate a reference date (i.e. what session date should we mimick)
  */
 export function getPrintedDateText(dateTimeStr, refDate?) {
-	console.log('DataHelper.getPrintedDateText, dateTimeStr=', dateTimeStr);
 	let evtMoment: moment.Moment = moment(dateTimeStr);
 	let evtCal = evtMoment.calendar();
 	if (refDate) {
 		evtCal = evtMoment.calendar(refDate)
 	}
-	console.log('DataHelper.getDateText, evtCal=', evtCal);
 	let dateTimeArr = evtCal.split(' ');
 	let dateTimeText = dateTimeArr.join(' ');
-	console.log('DataHelper.getPrinteDateText returning', dateTimeText);
 	return dateTimeText;
 }
