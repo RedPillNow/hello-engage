@@ -1,7 +1,7 @@
 {
     "interactionModel": {
         "languageModel": {
-            "invocationName": "lotus rotterdam",
+            "invocationName": "lotus",
             "intents": [
                 {
                     "name": "GeneralGreetingIntent",

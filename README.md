@@ -30,6 +30,7 @@ This performs a query on a Firebase Cloud Firestore database (See Relevant Links
 * which sessions are in {AMAZON.Room}
 * get sessions by {AMAZON.Organization}
 * show sessions by {AMAZON.Organization}
+* get sessions about {SessionName}
 
 ### Help
 
