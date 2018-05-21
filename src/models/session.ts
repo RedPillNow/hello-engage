@@ -14,6 +14,7 @@ export class Session {
 	private _session_speakers: Speaker[];
 	private _session_subtype: string; // $36
 	private refDate: Date = new Date() < new Date('5/21/2018') ? new Date('5/22/2018') : new Date();
+	private _deck: string;
 
 	constructor(apiObj) {
 		this._apiObj = apiObj;
@@ -35,6 +36,13 @@ export class Session {
 
 	get apiObj() {
 		return this._apiObj;
+	}
+
+	get deck() {
+		if (this.sessionRoom) {
+			this._deck = utils.getDeck(this.sessionRoom);
+		}
+		return this._deck;
 	}
 
 	get sessionDate() {

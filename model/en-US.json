@@ -19,7 +19,21 @@
                         "what's up",
                         "what's happening"
                     ]
-                },
+				},
+				{
+					"name": "DeckIntent",
+					"slots": [
+						{
+							"name": "AMAZON.Room",
+							"type": "AMAZON.Room"
+						}
+					],
+					"samples": [
+						"which deck is the {AMAZON.Room} on",
+						"what deck is the {AMAZON.Room} on",
+						"where is the {AMAZON.Room}"
+					]
+				},
                 {
                     "name": "SessionsIntent",
                     "slots": [

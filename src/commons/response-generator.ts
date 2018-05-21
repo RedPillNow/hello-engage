@@ -1,6 +1,7 @@
 import * as Alexa from 'ask-sdk-core';
 import * as rpTypes from './types';
 import {Session} from '../models/session';
+import * as utils from './utils';
 
 export class ResponseGenerator {
 
@@ -125,6 +126,29 @@ export class ResponseGenerator {
 				.getTextContent(),
 			cardTitle: 'Maybe I didn\'t understand what you said',
 			cardText: 'I didn\'t understand what you said. Please try again.'
+		};
+	}
+
+	static getDeckResponse(roomName: string): rpTypes.TextResponse {
+		let deck = utils.getDeck(roomName);
+		let txt = null;
+		if (!deck) {
+			txt = '<emphasis level="strong">hmmm</emphasis>, I don\'t know that room, please try again';
+		}else {
+			let spokenRoom = roomName;
+			if (roomName.toLowerCase().indexOf('room') === -1) {
+				if (roomName.toLowerCase().indexOf('theater') === -1) {
+					spokenRoom = roomName + ' room ';
+				}
+			}
+			txt = 'The ' + spokenRoom + ' is located on the ' + deck;
+		}
+		return {
+			textContent: new Alexa.PlainTextContentHelper()
+				.withPrimaryText(txt)
+				.getTextContent(),
+			cardTitle: deck,
+			cardText: txt
 		};
 	}
 

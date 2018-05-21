@@ -136,3 +136,28 @@ export function getPrintedDateText(dateTimeStr, refDate?) {
 	let dateTimeText = dateTimeArr.join(' ');
 	return dateTimeText;
 }
+/**
+ * Determine which deck the roomName is on
+ * @param roomName The value from the room name slot
+ */
+export function getDeck(roomName: string): string {
+	let deck = null;
+	if (roomName) {
+		if (roomName === 'A. Theatre') {
+			deck = 'Promenade Deck';
+		}else if (roomName === 'B. Guadaloupe') {
+			deck = 'Main Deck';
+		}else if (roomName === 'C. Trinidad') {
+			deck = 'Main Deck';
+		}else if (roomName === 'D. Sun Room') {
+			deck = 'Sun Deck';
+		} else if (roomName === 'E. Sky Room') {
+			deck = 'Bridge Deck';
+		}else if (roomName === 'Table 1 Vancouver') {
+			deck = 'Main Deck';
+		}else if (roomName === 'Table 2 Honolulu') {
+			deck = 'Main Deck';
+		}
+	}
+	return deck;
+}

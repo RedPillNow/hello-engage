@@ -15,8 +15,8 @@
   "author": "Keith Strickland <keith@redpillnow.com>",
   "license": "ISC",
   "devDependencies": {
-    "@types/alexa-sdk": "^1.1.1",
-    "@types/mocha": "^5.2.0",
+	"@types/alexa-sdk": "^1.1.1",
+	"@types/mocha": "^5.2.0",
     "@types/sinon": "^4.3.1",
     "@types/sinon-chai": "^2.7.29",
     "archiver": "^2.1.1",
@@ -28,15 +28,15 @@
     "mocha": "^5.1.1",
     "replace": "^0.3.0",
     "rimraf": "^2.6.2",
-    "stopwords": "0.0.9",
     "typescript": "^2.8.3"
-  },
-  "dependencies": {
-    "ask-sdk": "^2.0.0",
+},
+"dependencies": {
+	"ask-sdk": "^2.0.0",
     "ask-sdk-core": "^2.0.1",
     "ask-sdk-model": "^1.0.1",
     "moment": "^2.22.1",
     "request": "^2.85.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+	"stopwords": "0.0.9"
   }
 }

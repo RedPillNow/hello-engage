@@ -165,6 +165,28 @@ const HelpIntentHandler: rpTypes.IntentHandler = {
 	}
 }
 /**
+ * Handler for when some asks which deck a room is on
+ */
+const DeckIntentHandler: rpTypes.IntentHandler = {
+	canHandle(handlerInput: Alexa.HandlerInput): boolean {
+		return handlerInput.requestEnvelope.request.type === 'IntentRequest' && handlerInput.requestEnvelope.request.intent.name === 'DeckIntent';
+	},
+	handle(handlerInput: Alexa.HandlerInput): Response {
+		let sessAttrs = handlerInput.attributesManager.getSessionAttributes();
+		let intent = (<IntentRequest> handlerInput.requestEnvelope.request).intent;
+		let slotVals = utils.getSlotValues(intent.slots, false);
+		let resp = ResponseGenerator.getDeckResponse(slotVals['AMAZON.Room']);
+		let speechText = resp.textContent.primaryText.text;
+		sessAttrs.speechOutput = speechText;
+
+		return handlerInput.responseBuilder
+			.speak(speechText)
+			.withSimpleCard(resp.cardTitle, resp.cardText)
+			.withShouldEndSession(true)
+			.getResponse();
+	}
+}
+/**
  * This is actually an ALL request interceptor. However, we include a 'canHandle'
  * determination that only actually does anything for the NoIntent.
  * Will fetch the sessions based on the slot values available
@@ -335,6 +357,7 @@ const skillBuilder = Alexa.SkillBuilders.custom();
 export const handler = skillBuilder
 	.addRequestHandlers(
 		CancelAndStopIntentHandler,
+		DeckIntentHandler,
 		GeneralGreetingIntentHandler,
 		HelpIntentHandler,
 		LaunchRequestHandler,
