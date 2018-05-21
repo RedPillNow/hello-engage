@@ -32,6 +32,14 @@ This performs a query on a Firebase Cloud Firestore database (See Relevant Links
 * show sessions by {AMAZON.Organization}
 * get sessions about {SessionName}
 
+### Deck
+
+Will inform person asking which deck a room is on
+
+* which deck is {AMAZON.Room} on
+* what deck is {AMAZON.Room} on
+* where is {AMAZON.Room}
+
 ### Help
 
 * some assistance please
