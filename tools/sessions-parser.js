@@ -13,9 +13,6 @@ let stopwords = require('stopwords').english;
 
 let fieldToReturn = process.argv[2];
 let outputFileName = process.argv[3];
-// console.log('fieldToReturn=', fieldToReturn);
-// console.log('outputFileName=', outputFileName);
-// console.log('stopwords=', stopwords);
 
 stopwords = stopwords.concat(['IBM','panagenda','panagenda:','Now:','AppFusions:','the','become','an','using']);
 let slotVals = [];

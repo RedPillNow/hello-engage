@@ -117,6 +117,7 @@ The following is required to develop for this skill.
 * [request-promise](https://www.npmjs.com/package/request-promise)
 * [moment](https://www.npmjs.com/package/moment)
 * [TypeScript 2.8.3](https://www.npmjs.com/package/typescript)
+* [stopwords](https://github.com/huned/node-stopwords)
 
 ## NPM Tasks
 
@@ -139,6 +140,7 @@ The following node scripts are included in this project
 * `compileTs.js` - Compiles TypeScript based on `tsconfig.json`
 * `deploy.js` - Zips up and deploys files to `AWS Lambda`
 * `firestore-import.js` - Imports the `firebase-entries-import.json` file into `Firestore`. Uses `hello-engage-a735c55c95c7.json` for authentication. That file is the private/public key for a service account.
+* `sessions-parser.js <fieldToReturn> <outputFileName>` - Will scan each session from `firebase-entries-import`, look at the field passed in, remove all the stop words from the value of the field and create `SLOT` values for that field and dump them to the `outputFileName` or if no output file is defined to the console
 
 ## Relevant Links
 
