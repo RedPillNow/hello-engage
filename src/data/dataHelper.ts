@@ -82,7 +82,7 @@ export class DataHelper {
 			}
 			console.log('ResponseGenerator.findSessions, body=', JSON.stringify(opts.body));
 		} else {
-			let now = new Date();
+			let now = new Date() < new Date('5/21/2018') || new Date() > new Date('5/23/2018') ? new Date('5/22/2018') : new Date();
 			let mom = moment(now);
 			let dateOnlyValue = mom.format('YYYYMMDD');
 			let nearestQuarter = utils.getNearestQuarterHour();
@@ -124,7 +124,7 @@ export class DataHelper {
 	 */
 	static getCompositeFilters(requestType: RequestType, searchValue): any[] {
 		let compFilters = [];
-		let now = new Date();
+		let now = new Date() < new Date('5/21/2018') || new Date() > new Date('5/23/2018') ? new Date('5/22/2018') : new Date();
 		switch (+requestType) {
 			case RequestType.ByRoom:
 				console.log('DataHelper.getCompositeFilters, by room');

@@ -89,7 +89,7 @@ export function toTitleCase(str: string): string {
  * @returns {string}
  */
 export function getNearestQuarterHour(): number {
-	let now = new Date();
+	let now = new Date() < new Date('5/21/2018') || new Date() > new Date('5/23/2018') ? new Date('5/22/2018') : new Date();
 	let minutes = now.getMinutes();
 	if (minutes < 7) {
 		minutes = 0;
