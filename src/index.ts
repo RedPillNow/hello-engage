@@ -355,6 +355,10 @@ const ErrorHandler: rpTypes.IntentHandler = {
 const skillBuilder = Alexa.SkillBuilders.custom();
 
 export const handler = skillBuilder
+	.addRequestInterceptors(
+		SessionsRequestInterceptor,
+		NoRequestInterceptor
+	)
 	.addRequestHandlers(
 		CancelAndStopIntentHandler,
 		DeckIntentHandler,
@@ -366,10 +370,6 @@ export const handler = skillBuilder
 		SessionEndedRequestHandler,
 		SessionsIntentHandler,
 		YesIntentHandler
-	)
-	.addRequestInterceptors(
-		SessionsRequestInterceptor,
-		NoRequestInterceptor
 	)
 	.addErrorHandlers(ErrorHandler)
 	.lambda();
